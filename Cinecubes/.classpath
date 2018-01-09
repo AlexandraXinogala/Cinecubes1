@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.38-bin.jar"/>
+	<classpathentry kind="lib" path="libs/antlr/antlr-3.4-complete.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-client-5.0-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-server-5.0-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/poi-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/poi-examples-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/poi-excelant-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/poi-ooxml-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/poi-ooxml-schemas-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/poi-scratchpad-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="libs/freetts-1.2/cmu_time_awb.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/lib/commons-codec-1.5.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/lib/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/ooxml-lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/ooxml-lib/ooxml-schemas-1.1.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/ooxml-lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.9/ooxml-lib/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-lang-en-5.0.jar"/>
+	<classpathentry kind="lib" path="libs/freetts-1.2/cmu_us_kal.jar"/>
+	<classpathentry kind="lib" path="libs/freetts-1.2/cmudict04.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/voice-cmu-slt-hsmm-5.0.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-lang-de-5.0.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-lang-it-5.0.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-lang-ru-5.0.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-lang-sv-5.0.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-lang-te-5.0.jar"/>
+	<classpathentry kind="lib" path="libs/marrytts/lib/marytts-lang-tr-5.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
