@@ -1,6 +1,8 @@
 package storymgr;
 import java.util.ArrayList;
 
+import TextMgr.TextExtraction;
+import TextMgr.TextExtractionPPTX;
 import AudioMgr.Audio;
 import AudioMgr.AudioEngine;
 import AudioMgr.MaryTTSAudioEngine;
@@ -25,8 +27,9 @@ public class PptxSlide extends Episode {
 	
 	public PptxSlide() {
 		super();
-		setSubTitle("");
-		setNotes("");
+		Title ="";
+		SubTitle ="";
+		notes = "";
 		audioMgr = new MaryTTSAudioEngine();
 		audioMgr.InitializeVoiceEngine();
 		initializeTime();
@@ -96,13 +99,6 @@ public class PptxSlide extends Episode {
 		timeCreationText = now  - timeCreationText;
 	}
 	
-	public void setTimeCreationColorTable(long timeCreationColorTable ){
-		this.timeCreationColorTable = timeCreationColorTable;
-	}
-	
-	public void subTimeCreationColorTable(long now ){
-		timeCreationColorTable = now  - timeCreationColorTable;
-	}
 		
 	public void addTimeCombineSlide(long time ){
 		timeCombineSlide += time;
@@ -189,4 +185,63 @@ public class PptxSlide extends Episode {
 		TitleRow = titleRow;
 	}
 	
+	public void computeColorTable(Tabular tbl ){
+		timeCreationColorTable = System.nanoTime();
+    	tbl.setColorTable(getHighlight());
+    	timeCreationColorTable = System.nanoTime()  - timeCreationColorTable;      
+   	}
+	
+	
+	public String createSlideOriginal(boolean isAudioOn, TextExtraction txtMgr, CubeQuery cubeQuery){
+		String ActHighlights ="";
+		Tabular tbl = (Tabular) getVisual();
+
+		/* ====== Create Txt For Original ======= */
+		timeCreationText =System.nanoTime();
+		Title += "Answer to the original question";
+		notes +=  (((TextExtractionPPTX) txtMgr)
+			.createTextForOriginalAct1(cubeQuery,highlight).replace("  ", " "));//tsk.getCubeQuery(0),
+		String add_to_notes = ((TextExtractionPPTX)txtMgr)
+			.createTxtForColumnsDominate(tbl.getPivotTable(), highlight.get(2));
+		add_to_notes += ((TextExtractionPPTX) txtMgr)
+			.createTxtForRowsDominate(tbl.getPivotTable(), highlight.get(3));
+		notes +="\n" + add_to_notes;
+		timeCreationText = System.nanoTime()  - timeCreationText;
+		if (add_to_notes.length() > 0)
+			 ActHighlights +=("Concerning the original query, some interesting findings include:\n\t");
+		 ActHighlights +=( add_to_notes.replace("\n", "\n\t"));
+		 if (isAudioOn) 
+			addAudioToEpisode();
+		 return ActHighlights;
+	}
+	
+	public void createSlideIntro(boolean isAudioOn,TextExtraction txtMgr, CubeQuery cubeQuery){
+		timeCreationText =System.nanoTime();
+		Title +=  "CineCube Report";
+		SubTitle = ((TextExtractionPPTX) txtMgr).createTxtForIntroSlide(cubeQuery);
+				notes += SubTitle;
+		timeCreationText = System.nanoTime()  - timeCreationText;
+		if (isAudioOn) 
+			addAudioToEpisode();
+	}
+	
+	public void createSlideAct1(boolean isAudioOn){
+		timeCreationText =System.nanoTime();
+		Title += ": Putting results in context";
+		SubTitle = "In this series of slides we put the original result in context, by comparing the behavior of its defining values with the behavior of values that are similar to them.";
+		notes += Title + "\n" + SubTitle;
+		timeCreationText = System.nanoTime()  - timeCreationText;
+		if (isAudioOn) 
+			addAudioToEpisode();
+	}
+	
+	
+	public void createSlideEnd(boolean isAudioOn, String notes){
+		timeCreationText =System.nanoTime();
+		Title +="Summary";
+		this.notes += notes;
+		timeCreationText = System.nanoTime()  - timeCreationText;
+		if (isAudioOn) 
+			addAudioToEpisode();
+	}
 }

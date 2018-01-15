@@ -38,8 +38,8 @@ public class TaskOriginal extends Task {
 		CubeQuery currentCubeQuery = cubeQuery.get(0);
     	Tabular tbl = new Tabular();
     	String[] extraPivot = new String[2];
-    	
-    	subtsk.setHighlight(new HighlightTable());
+    	 if(subtsk.getHighlight()==null)
+    		 subtsk.setHighlight(new HighlightTable());
 
     	HighlightMin hlmin = new HighlightMin();
     	HighlightMax hlmax = new HighlightMax();
@@ -51,7 +51,7 @@ public class TaskOriginal extends Task {
 	    newSlide.getHighlight().add(hldomcol);
 	    newSlide.getHighlight().add(hldomrow);
     	newSlide.addCubeQuery(currentCubeQuery);
-    	currentAct.addEpisode(newSlide);
+    	
         newSlide.setVisual(tbl);
         
         
@@ -65,7 +65,7 @@ public class TaskOriginal extends Task {
 	    		 			  subtsk.getExtractionMethod().getResultArray(),
 	    		 			  extraPivot);
 	    newSlide.subTimeCreationTabular(System.nanoTime());
-	    
+	    currentAct.addEpisode(newSlide);
 	    
 	    /*====== Calculate Highlioghts =======*/
     	newSlide.setTimeComputeHighlights(System.nanoTime());
@@ -82,10 +82,7 @@ public class TaskOriginal extends Task {
     	newSlide.subTimeComputeHighlights(System.nanoTime());
     	
     	/*====== Compute Color Table =======*/
-    	newSlide.setTimeCreationColorTable(System.nanoTime());
-    	tbl.setColorTable(newSlide.getHighlight());
-    	newSlide.subTimeCreationColorTable(System.nanoTime());
-    	
+    	newSlide.computeColorTable(tbl); 
     	/*====== Calculate domination Highlioghts =======*/
     	long start_creation_domination = System.nanoTime();
 		newSlide.addTimeComputeHighlights(System.nanoTime() - start_creation_domination);

@@ -3,9 +3,13 @@ package TaskMgr;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import CubeMgr.CubeBase.CubeBase;
+import CubeMgr.CubeBase.CubeQuery;
 import CubeMgr.StarSchema.Database;
+import CubeMgr.StarSchema.SqlQuery;
 import HelpTask.ExtractionMethod;
 import HighlightMgr.Highlight;
+import HighlightMgr.HighlightTable;
 
 public class SubTask {
     
@@ -65,13 +69,27 @@ public class SubTask {
 		return differencesFromOrigin.get(i);
 	}
 
-	public void setDifferencesFromOrigin(ArrayList<Integer> differencesfromorigin) {
-		this.differencesFromOrigin = differencesfromorigin;
-	}
 	
 	public void addDifferenceFromOrigin(int num){
 		this.differencesFromOrigin.add(num);
 	}
 	
+	public void createSubTask(CubeQuery cubequery,int difference,int replace, long strTime, CubeBase cubeBase){
+		long endTime=System.nanoTime();
+		SqlQuery newSqlQuery=new SqlQuery();
+        long strTimeProduce=System.nanoTime();
+        newSqlQuery.produceExtractionMethod(cubequery);
+        timeProduceOfExtractionMethod = System.nanoTime() - strTimeProduce;
+        cubequery.setSqlQuery(newSqlQuery);
+        setExtractionMethod(newSqlQuery);
+        if (replace == 1) 
+        	 differencesFromOrigin.add(-1);
+        HighlightTable hltbl=new HighlightTable();
+        setHighlight(hltbl);
+        differencesFromOrigin.add(difference);
+    	timeProduceOfCubeQuery = endTime - strTime;
+		timeCreationOfSbTsk = System.nanoTime() - strTime;
+		execute(cubeBase.getDatabase());
+	}
 	
 }

@@ -56,7 +56,6 @@ public class Story {
 
 	private void createAct(int idAct) {
 		Acts.add(new Act(idAct));
-		getLastAct().setTimeCreation(System.nanoTime());
 	}
 
 	private SubTask createOriginalAct(CubeQuery cubeQuery, boolean isAudioOn,
@@ -68,20 +67,11 @@ public class Story {
 	private void createActI(CubeQuery cubeQuery, SubTask originSbTsk,
 			boolean isAudioOn, CubeManager cubeManager) {
 		createAct(1);
-		ArrayList<PptxSlide> slideToEnd = getLastAct().doTaskActI(cubeQuery,
-				originSbTsk, isAudioOn, cubeManager, measure);
+		Act act = getLastAct().doTaskActI(cubeQuery, originSbTsk, isAudioOn,
+				cubeManager, measure);
 		/* ======== Act 3 ============= */
-		if (slideToEnd.size() > 0) {
-			Acts.add(new Act(3));
-			PptxSlide newSlide = new PptxSlide();
-			newSlide.setTitle("Auxiliary slides for Act I");
-			getLastAct().addEpisode(newSlide);
-			for (int k = 0; k < slideToEnd.size(); k++) {
-				getLastAct().getEpisodes().remove(slideToEnd.get(k));
-				getLastAct().addEpisode(slideToEnd.get(k));
-			}
-			slideToEnd.clear();
-		}
+		if (act != null)
+			Acts.add(act);	
 		act_story_time += "Act 1\t" + getLastAct().getTimeCreation() + "\n";
 	}
 

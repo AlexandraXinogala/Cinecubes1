@@ -44,24 +44,13 @@ public class Act {
 	 * @uml.property  name="actHighlights"
 	 */
     private  String ActHighlights; 
-    
-    public String getActHighlights(){
-    	return ActHighlights;
-    }
-        
-    public void setTimeCreation(long creationTime){
-    	this.creationTime = creationTime;
-    }
-    
-    public long getTimeCreation(){
-    	return creationTime ;
-    }
-    
+             
     public Act(int id){
     	txtMgr = new TextExtractionPPTX();
     	this.id =id;
     	Episodes=new ArrayList<Episode>();
     	ActHighlights="";
+    	creationTime = System.nanoTime();
     }
 
 	public ArrayList<Episode> getEpisodes() {
@@ -79,11 +68,10 @@ public class Act {
 	public int getNumEpisodes(){
 		return Episodes.size();
 	}	
+	 public long getTimeCreation() {
+		 return creationTime;
+	 }
 	
-	public Task getTask(){
-		return tsk;
-	}
-
 	/**
 	 * @return  the id
 	 * @uml.property  name="id"
@@ -96,35 +84,20 @@ public class Act {
 	public String toString(){
 		return "Act id:"+String.valueOf(id)+"\n# Episodes:"
 				+String.valueOf(this.getNumEpisodes());
-		
 	}
 	
-	public void doIntroTask(CubeQuery cubequery,boolean isAudioOn,  CubeManager CubeManager){
+	public void doIntroTask(CubeQuery cubequery, boolean isAudioOn,  CubeManager CubeManager){
 		tsk = new TaskIntro();
 		tsk.addCubeQuery(cubequery);
 		tsk.generateSubTasks(CubeManager.getCubeBase());
 		tsk.constructActEpidoses(this);
 		PptxSlide tmpslide=new PptxSlide();
 		addEpisode(tmpslide);
-		constructTxtIntroAct(isAudioOn);
+		tmpslide.createSlideIntro(isAudioOn,txtMgr, tsk.getCubeQuery(0)); 
 		creationTime = System.nanoTime() - creationTime;
 	}
-    	
-	private void constructTxtIntroAct( boolean isAudioOn) {
-		PptxSlide tmpslide = (PptxSlide) getEpisode(0);
-		tmpslide.setTitle("CineCube Report");
-
-		tmpslide.setTimeCreationText(System.nanoTime());
-		tmpslide.setSubTitle(((TextExtractionPPTX) txtMgr).createTxtForIntroSlide(
-				tsk.getCubeQuery(0)));
-		tmpslide.subTimeCreationText(System.nanoTime());
-		tmpslide.setNotes(tmpslide.getSubTitle());
-
-		if (isAudioOn) 
-			tmpslide.addAudioToEpisode();
-	}
-	
-	public SubTask doOriginalTask(CubeQuery cubequery,boolean isAudioOn,  CubeManager CubeManager){
+  	
+	public SubTask doOriginalTask(CubeQuery cubequery, boolean isAudioOn,  CubeManager CubeManager){
 		tsk =new TaskOriginal();
 		tsk.addCubeQuery(cubequery);
 		tsk.generateSubTasks(CubeManager.getCubeBase());
@@ -134,41 +107,12 @@ public class Act {
 			System.err.println("Your query does not have result. Try again!");
 			System.exit(2);
 		}
-		constructTxtOriginalAct( isAudioOn);
+		ActHighlights += ((PptxSlide) getEpisode(0)).createSlideOriginal(isAudioOn, txtMgr, tsk.getCubeQuery(0));
 		creationTime = System.nanoTime() - creationTime;
 		return OriginSbTsk;
 	}
 
-	private void constructTxtOriginalAct(boolean isAudioOn) {
-
-		CubeQuery currentCubeQuery = tsk.getCubeQuery(0);
-		PptxSlide newSlide = (PptxSlide) getEpisode(0);
-		Tabular tbl = (Tabular) newSlide.getVisual();
-
-		/* ====== Create Txt For Original ======= */
-		newSlide.setTimeCreationText(System.nanoTime());
-		newSlide.setTitle("Answer to the original question");
-		newSlide.setNotes(((TextExtractionPPTX) txtMgr)
-				.createTextForOriginalAct1(currentCubeQuery,
-						newSlide.getHighlight()).replace("  ", " "));
-
-		String add_to_notes = ((TextExtractionPPTX)txtMgr)
-				.createTxtForColumnsDominate(tbl.getPivotTable(), newSlide
-						.getHighlight().get(2));
-		add_to_notes += ((TextExtractionPPTX) txtMgr)
-				.createTxtForRowsDominate(tbl.getPivotTable(), newSlide
-						.getHighlight().get(3));
-		newSlide.setNotes(newSlide.getNotes() + "\n" + add_to_notes);
-		newSlide.subTimeCreationText(System.nanoTime());
-		if (add_to_notes.length() > 0)
-			 ActHighlights +=("Concerning the original query, some interesting findings include:\n\t");
-		 ActHighlights +=( add_to_notes.replace("\n", "\n\t"));
-
-		 if (isAudioOn) 
-			 newSlide.addAudioToEpisode();
-	}
-
-	public ArrayList<PptxSlide> doTaskActI(CubeQuery cubequery,SubTask OriginSbTsk ,boolean isAudioOn,  CubeManager CubeManager,String measure){
+	public Act doTaskActI(CubeQuery cubequery, SubTask OriginSbTsk ,boolean isAudioOn,  CubeManager CubeManager,String measure){
 		ArrayList<PptxSlide> slideToEnd = new ArrayList<PptxSlide>();
 		tsk =new TaskActI();
 		long timeSbts = System.nanoTime();
@@ -182,7 +126,12 @@ public class Act {
 		tsk.constructActEpidoses(this);
 		slideToEnd = setupTextAct1(cubequery, isAudioOn);
 		creationTime = System.nanoTime() - creationTime;
-		return slideToEnd;
+		if (slideToEnd.size() > 0) {
+			Act newAct = new Act(3);
+			newAct.setupTextAct3(slideToEnd);
+			return newAct;
+		}
+		return null;
 	}
 	
 	public SqlQuery createCubeQueryStartOfActSlide(String num_act, String measure) {
@@ -210,31 +159,18 @@ public class Act {
 		for (int j = 0; j < getNumEpisodes(); j++) {
 			PptxSlide currentSlide = (PptxSlide) getEpisode(j);
 			if (j == 0) {
-				currentSlide.setTimeCreationText(System.nanoTime());
-				currentSlide.setTitle(currentSlide.getTitle()
-						+ ": Putting results in context");
-				currentSlide
-						.setSubTitle("In this series of slides we put the original result in context, by comparing the behavior of its defining values with the behavior of values that are similar to them.");
-				currentSlide.setNotes(currentSlide.getTitle() + "\n"
-						+ currentSlide.getSubTitle());
-				currentSlide.subTimeCreationText(System.nanoTime());
-
-				if (isAudioOn) 
-					currentSlide.addAudioToEpisode();
+				currentSlide.createSlideAct1(isAudioOn);
 			} else {
 				SubTask subtsk = currentSlide.getSubTasks().get(0);
 				CubeQuery currentCubeQuery = currentSlide.CbQOfSlide.get(0);
-				SqlQuery currentSqlQuery = (SqlQuery) subtsk
-						.getExtractionMethod();
+				SqlQuery currentSqlQuery = (SqlQuery) subtsk.getExtractionMethod();
 				Tabular tbl = (Tabular) currentSlide.getVisual();
 				if (subtsk.getDifferenceFromOrigin(0) == -1) {
 					int gamma_index_change = subtsk.getDifferenceFromOrigin(1);
 					currentSlide.setTimeCreationText(System.nanoTime());
-					currentSlide.setTitle("Assessing the behavior of ");
-					currentSlide.setTitle(currentSlide.getTitle()
+					currentSlide.setTitle("Assessing the behavior of "
 							+ currentCubeQuery.getGammaExpressions()
-									.get(gamma_index_change)[0].replace("_dim",
-									""));
+							.get(gamma_index_change)[0].replace("_dim",	""));
 					currentSlide.getVisual().getPivotTable()[0][0] = " Summary for "
 							+ currentCubeQuery.getGammaExpressions()
 									.get(gamma_index_change)[0].split("_")[0];
@@ -249,27 +185,23 @@ public class Act {
 									currentCubeQuery.getAggregateFunction(),
 									currentCubeQuery.getListMeasure().get(0).getName()));
 					currentSlide.subTimeCreationText(System.nanoTime());
-					String add_to_notes = "";
+					String addToNotes = "";
+					long strTimeTxt = System.nanoTime();
 					if (gamma_index_change == 0) {
-						long strTimeTxt = System.nanoTime();
-						add_to_notes = ((TextExtractionPPTX) txtMgr)
+						addToNotes = ((TextExtractionPPTX) txtMgr)
 								.createTxtComparingToSiblingColumn(tbl
 										.getPivotTable(), currentSlide
 										.getHighlight().get(2));
-						currentSlide.addTimeCreationText(System.nanoTime() - strTimeTxt);
 					} else {
-						long strTimeTxt = System.nanoTime();
-						add_to_notes = ((TextExtractionPPTX) txtMgr)
-								.createTxtComparingToSiblingRow(tbl
-										.getPivotTable(), currentSlide
-										.getHighlight().get(3));
-						currentSlide.addTimeCreationText(System.nanoTime() - strTimeTxt);
+						addToNotes = ((TextExtractionPPTX) txtMgr)
+							.createTxtComparingToSiblingRow(tbl.getPivotTable(),
+							currentSlide.getHighlight().get(3));
 					}
+					currentSlide.addTimeCreationText(System.nanoTime() - strTimeTxt);
 					currentSlide.setNotes(currentSlide.getNotes() + "\n"
-							+ add_to_notes);
+							+ addToNotes);
 
-					if (ActHasWriteHiglights == false
-							&& add_to_notes.length() > 0) {
+					if (ActHasWriteHiglights == false && addToNotes.length() > 0) {
 						ActHasWriteHiglights = true;
 						ActHighlights +=( "@First, we tried to put the original result in context, by comparing its defining values with similar ones.\n\t");
 					}
@@ -290,7 +222,7 @@ public class Act {
 									.replace("_dim", "")
 							+ ", we observed the following:\n~~";
 
-					ActHighlights +=(add_to_notes.replace("\n", "\n\t")
+					ActHighlights +=(addToNotes.replace("\n", "\n\t")
 							.replace(toReplaceString1, newString + "In")
 							.replace(toReplaceString2, newString));
 
@@ -325,6 +257,17 @@ public class Act {
 		}
 		return slideToEnd;
 
+	}
+	
+	private void setupTextAct3(  ArrayList<PptxSlide>  slideToEnd){
+		PptxSlide newSlide = new PptxSlide();
+		newSlide.setTitle("Auxiliary slides for Act I");
+		addEpisode(newSlide);
+		for (int k = 0; k < slideToEnd.size(); k++) {
+			getEpisodes().remove(slideToEnd.get(k));
+			addEpisode(slideToEnd.get(k));
+		}
+		slideToEnd.clear();
 	}
 	
 	public void doTaskActII(CubeQuery cubequery,SubTask OriginSbTsk ,boolean isAudioOn,  CubeManager CubeManager, String measure){
@@ -474,31 +417,25 @@ public class Act {
 		tsk.generateSubTasks(CubeManager.getCubeBase());
 		tsk.constructActEpidoses(this);
 		PptxSlide tmpslide=new PptxSlide();
+		tmpslide.createSlideEnd(isAudioOn, composeActHighlights(acts));
 		addEpisode(tmpslide);
-		constructTxtEndAct(acts,isAudioOn);
 		creationTime = System.nanoTime() - creationTime;
 	}
 	
-	public void constructTxtEndAct(ArrayList<Act> acts, boolean isAudioOn) {
-		PptxSlide newSlide = (PptxSlide) getEpisode(0);
-		newSlide.setTimeCreationText(System.nanoTime());
-		newSlide.setNotes("In this slide we summarize our findings.");
-		newSlide.setTitle("Summary");
+	private String composeActHighlights(ArrayList<Act> acts) {
+		String notesFromAct = "In this slide we summarize our findings.";
 		for (Act actItem : acts) {
-			if (actItem.getActHighlights().length() > 0) {
-				if (newSlide.getNotes().length() > 0)
-					newSlide.setNotes(newSlide.getNotes() + "@");
-				newSlide.setNotes(newSlide.getNotes() + actItem.getActHighlights());
+			if (actItem.ActHighlights.length() > 0) {
+				if ( notesFromAct.length() > 0)
+					 notesFromAct += "@";
+				notesFromAct += actItem.ActHighlights;
 			}
-			newSlide.setNotes(newSlide.getNotes().replace("\n\n\n", "\n")
-					.replace("\n\n", "\n").replace("\n\t\n", "\n\t"));
+			notesFromAct = notesFromAct.replace("\n\n\n", "\n")
+					.replace("\n\n", "\n").replace("\n\t\n", "\n\t");
 		}
-		newSlide.setNotes(newSlide.getNotes().replace("\n\n\n", "\n")
-				.replace("\n\n", "\n").replace("\t", "").replace("\r", ""));
-		newSlide.subTimeCreationText(System.nanoTime());
-
-		if (isAudioOn) 
-			newSlide.addAudioToEpisode();
+		notesFromAct = notesFromAct.replace("\n\n\n", "\n")
+				.replace("\n\n", "\n").replace("\t", "").replace("\r", "");
+		return notesFromAct;
 	}
 
 }

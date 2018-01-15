@@ -16,29 +16,17 @@ public class TextExtractionPPTX extends TextExtraction {
     	String dimensionText="Here, you can see the answer of the original query. You have specified ";
     	String maxText="You can observe the results in this table. We highlight the largest value";
     	String minText="and the lowest value";
-    	int j=0;
-    	for(String[] sigma:cubeQuery.getSigmaExpressions()){
-    		if(j>0) dimensionText+=", ";
-    		if(j==cubeQuery.getSigmaExpressions().size()-1) dimensionText+=" and ";
-    		dimensionText+=sigma[0].split("\\.")[0].replace("_dim", "")+" to be equal to "+sigma[2].replace("*", "ALL")+"";
-    		j++;
-    	}
-    	dimensionText+=". We report on "+cubeQuery.getAggregateFunction()+" of "+cubeQuery.getListMeasure().get(0).getName()+" grouped by ";
-    	j=0;
-    	for(String[] gamma:cubeQuery.getGammaExpressions()){
-    		if(j>0) dimensionText+=", ";
-    		if(j==cubeQuery.getGammaExpressions().size()-1) dimensionText+=" and ";
-    		dimensionText+=gamma[0].replace("_dim", "")+" at "+gamma[1].replace("lvl", "level ");
-    		j++;
-    	}
-
-    	if(htable.get(0).semanticValue.size()>1) maxText+="s";
-    	maxText+=" with "+htable.get(0).maxcolor_name+" "; 
-    	
-    
-    	if(htable.get(1).semanticValue.size()>1) minText+="s";
-    	minText+=" with "+htable.get(0).mincolor_name+" color. "; 
-		return dimensionText+" .\n"+maxText+minText;
+    	dimensionText += cubeQuery.getSigmaTextForOriginalAct1();
+    	dimensionText += ". We report on " + cubeQuery.getAggregateFunction() +
+    			" of " + cubeQuery.getListMeasure().get(0).getName() + " grouped by ";
+    	dimensionText += cubeQuery.getGammaTextForOriginalAct1();
+    	if(htable.get(0).semanticValue.size()>1)
+    		maxText+="s";
+		maxText += " with " + htable.get(0).maxcolor_name + " "; 
+       	if(htable.get(1).semanticValue.size()>1)
+    		minText += "s";
+		minText += " with " + htable.get(0).mincolor_name + " color. "; 
+		return dimensionText+" .\n" + maxText + minText;
     }
     
     public String createTextForOriginalAct2(ArrayList<String[]> Gamma,ArrayList<String[]> Sigma,String[][] Result){
@@ -155,18 +143,10 @@ public class TextExtractionPPTX extends TextExtraction {
   
     
     public String createTxtForIntroSlide(CubeQuery cubeQuery ){
-    	String ret_txt="This is a report on the "+ cubeQuery.getAggregateFunction()+" of "+cubeQuery.getListMeasure().get(0).getName()+" when ";
-    	
-    	int i=0;
-    	
-    	for(String [] sigma: cubeQuery.getSigmaExpressions()){
-    		if(i==cubeQuery.getSigmaExpressions().size()-1) ret_txt+=" and ";
-    		else if(i>0) ret_txt+=", ";
-    		ret_txt+=sigma[0].split("\\.")[0].replace("_dim","").replace("lvl", "level ")+" is fixed to "+sigma[2].replace("*", "ALL");
-    		i++;
-    	}
-    	ret_txt+=". We will start by answering the original query and we complement the result with contextualization and detailed analyses.";
-    	return ret_txt.replace("  ", " ").replace("\n", "").replace("\r", "");
+    	String retTxt="This is a report on the "+ cubeQuery.getAggregateFunction()+" of "+cubeQuery.getListMeasure().get(0).getName()+" when ";
+    	retTxt += cubeQuery.getSigmaTextForIntro();
+    	retTxt+=". We will start by answering the original query and we complement the result with contextualization and detailed analyses.";
+    	return retTxt.replace("  ", " ").replace("\n", "").replace("\r", "");
     }
     
     /*version 1*/

@@ -5,7 +5,6 @@ import CubeMgr.StarSchema.DimensionTable;
 import CubeMgr.StarSchema.FactTable;
 import CubeMgr.StarSchema.Table;
 
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
@@ -183,6 +182,24 @@ public class CubeBase {
 				return msr;
 		}
 		return null;
+	}
+	
+	public String getChildOfGamma(String[] gamma_tmp) {
+		String ret_value = null;
+		for (int i = 0; i < dimensions.size(); i++) {
+			Dimension tmp = dimensions.get(i);
+			if (tmp.name.equals(gamma_tmp[0])) {
+				for (Hierarchy hier : tmp.getHier()) {
+					for (int j = 0; j < hier.lvls.size(); j++) {
+						if (hier.lvls.get(j).getName().equals(gamma_tmp[1])) {
+							if (j > 0)
+								ret_value = hier.lvls.get(j - 1).getName();
+						}
+					}
+				}
+			}
+		}
+		return ret_value;
 	}
 
 }

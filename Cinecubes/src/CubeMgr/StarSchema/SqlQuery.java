@@ -1,6 +1,7 @@
 package CubeMgr.StarSchema;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import HelpTask.ExtractionMethod;
 
@@ -181,5 +182,6 @@ public class SqlQuery extends ExtractionMethod {
 	public void addFromClause(String[] index) {
 		this.FromClause.add(index);
 	}
+	
 	
 }

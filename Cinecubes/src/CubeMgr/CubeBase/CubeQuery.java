@@ -1,6 +1,7 @@
 package CubeMgr.CubeBase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import CubeMgr.StarSchema.SqlQuery;
 
@@ -53,16 +54,8 @@ public class CubeQuery extends Cube {
 		return AggregateFunction;
 	}
 	
-	public void setGammaExpressions( ArrayList<String[]> GammaExpressions){
-		this.GammaExpressions = GammaExpressions;
-	}
-	
 	public ArrayList<String[]> getGammaExpressions() {
 		return GammaExpressions;
-	}
-	
-	public void setSigmaExpressions( ArrayList<String[]> SigmaExpressions){
-		this.SigmaExpressions = SigmaExpressions;
 	}
 	
 	public ArrayList<String[]> getSigmaExpressions() {
@@ -92,6 +85,10 @@ public class CubeQuery extends Cube {
 
 	public SqlQuery getSqlQuery(){
 		return sqlQuery;
+	}
+	
+	public void createSqlQuery(){
+		
 	}
 	
 	public void setSqlQuery(SqlQuery sqlQuery){
@@ -132,11 +129,191 @@ public class CubeQuery extends Cube {
 		}
 		return ret_value;
 	}
+	
+	public String createQuery(int i, Level parentLvl) {
+		String dimension = SigmaExpressions.get(i)[0].split("\\.")[0];
+		String lvlname = SigmaExpressions.get(i)[0].split("\\.")[1];
+		String table = referCube.getSqlTableByDimensionName(dimension);
+		String field = referCube.getSqlFieldByDimensionLevelName(dimension, lvlname);
+		String field2 = parentLvl.lvlAttributes.get(0).getAttribute().getName();
+		String tmp_query="SELECT DISTINCT "+field2+ " FROM "+table+" WHERE "+field+"="+ SigmaExpressions.get(i)[2];
+		return tmp_query;
+	}
+	
+	public Level getNameParentLevel(int i){
+		String dimension = SigmaExpressions.get(i)[0].split("\\.")[0];
+		String level = SigmaExpressions.get(i)[0].split("\\.")[1];
+		return referCube.getParentLevel(dimension, level);
+	}
 
+	 public int getIndexOfSigma( String gamma_dim) {
+		 	int ret_value=-1;
+			int i=0;
+			for(String[] sigma : SigmaExpressions ){
+				if(sigma[0].split("\\.")[0].equals(gamma_dim)) ret_value=i;
+				i++;
+			}
+			return ret_value;
+		}
+	
 	public void addMeasure(int id, String name){
 		Measure msrToAdd = new Measure(id, name, null);
 		Msr.add( msrToAdd);
 	}
+		  
+    public boolean checkIfSigmaExprIsInGamma(int toChange) {
+			boolean ret_value=false;
+			String [] tmp = SigmaExpressions.get(toChange)[0].split("\\.");
+			for(String [] gammaExpr : GammaExpressions){
+				if(gammaExpr[0].equals(tmp[0]))
+					ret_value=true; 
+			}
+			return ret_value;
+	}
+
+    public int getGammaPositionOfSigma(int toChange) {
+		int ret_value=0;
+		String [] tmp = SigmaExpressions.get(toChange)[0].split("\\.");
+		for(int i=  0; i < GammaExpressions.size(); i++) {
+			String[] gammaExpr= GammaExpressions.get(i);
+			if(gammaExpr[0].equals(tmp[0])) {
+				ret_value=i;
+				break;
+			}
+		}
+		return ret_value;
+    }
+    
+    private void copyGammaExpressions(CubeQuery oldQuery){
+		for(int i = 0; i < oldQuery.GammaExpressions.size(); i++){
+			String[] old = oldQuery.GammaExpressions.get(i);
+			String[] toadd = new String[old.length];
+			for(int j = 0;j < old.length; j++){
+				toadd[j] = old[j];
+			}
+			GammaExpressions.add(toadd);
+		}
+	}
+    
+    
+    private void copySigmaExpressions(CubeQuery oldQuery){
+		for(int i = 0; i < oldQuery.SigmaExpressions.size(); i++){
+			String[] old = oldQuery.SigmaExpressions.get(i);
+			String[] toadd = new String[old.length];
+			for(int j = 0;j < old.length; j++){
+				toadd[j] = old[j];
+			}
+			SigmaExpressions.add(toadd);
+		}
+	}
+    
+    public CubeQuery(CubeQuery oldQuery){
+    	super("");
+    	GammaExpressions = new ArrayList<String[]>();
+		SigmaExpressions = new ArrayList<String[]>();
+    	 copyGammaExpressions(oldQuery);
+    	 copySigmaExpressions(oldQuery);
+    	this.AggregateFunction = (oldQuery.AggregateFunction);
+		this.referCube = oldQuery.referCube;
+		this.Msr = oldQuery.Msr;
+    }
+    
+    public boolean doDrillInColVersion(CubeBase cubeBase, String[] valuesToChange,
+			HashSet<String> row_per_col, CubeQuery newQuery) {/*  valuesToChange[0]->Row
+										   * Value,valuesToChange[1]->Column Value */
+		
+		String[] gamma_tmp = GammaExpressions.get(0); // Row Dimension
+
+		int index_sigma_change_bygamma = getIndexOfSigmaToDelete(gamma_tmp[0]);// getRow Sigma							
+		if (index_sigma_change_bygamma > -1) {
+			newQuery.SigmaExpressions.get(index_sigma_change_bygamma)[0] = newQuery.GammaExpressions
+					.get(0)[0] + "." + newQuery.GammaExpressions.get(0)[1];
+			newQuery.SigmaExpressions.get(index_sigma_change_bygamma)[2] = "'"
+					+ valuesToChange[1] + "'";
+		}
+		String child_level_of_gamma = cubeBase.getChildOfGamma(gamma_tmp);
+		if (child_level_of_gamma != null) {
+			newQuery.GammaExpressions.get(0)[1] = child_level_of_gamma;
+			newQuery.GammaExpressions.set(0, newQuery.GammaExpressions
+					.set(1,	newQuery.GammaExpressions.get(0)));
+		} else 
+			return false;
+		return true;
+	}
+    
+    public boolean doDrillInRowVersion(CubeBase cubeBase, String[] valuesToChange,
+			HashSet<String> cols, CubeQuery newQuery) { /* valuesToChange[0]->Row
+									 * Value,valuesToChange[1]->Column Value */
+		
+		String[] gamma_tmp = GammaExpressions.get(1); //column dimension
+		int index_sigma_change_bygamma = getIndexOfSigmaToDelete(gamma_tmp[0]);
+		String child_level_of_gamma = cubeBase.getChildOfGamma( gamma_tmp);
+		
+			if (index_sigma_change_bygamma > -1) {
+			newQuery.SigmaExpressions.get(index_sigma_change_bygamma)[0] = newQuery.GammaExpressions
+					.get(1)[0] + "." + newQuery.GammaExpressions.get(1)[1];
+			newQuery.SigmaExpressions.get(index_sigma_change_bygamma)[2] = "'"
+					+ valuesToChange[1] + "'";
+		}
+
+		if (child_level_of_gamma != null) {
+			newQuery.GammaExpressions.get(1)[1] = child_level_of_gamma;
+			
+		} else
+			return false;
+		return true;
+		}
+    
+	public int getIndexOfSigmaToDelete(String gamma_dim) {
+		int ret_value = -1;
+		int i = 0;
+		for (String[] sigma : SigmaExpressions) {
+			if (sigma[0].split("\\.")[0].equals(gamma_dim))
+				ret_value = i;
+			i++;
+		}
+		return ret_value;
+	}
+    
+	public String getSigmaTextForIntro(){
+		String retTxt= "";
+		int i=0;
+    	for(String [] sigma: SigmaExpressions) {
+    		if(i == SigmaExpressions.size() - 1)
+    			retTxt += " and ";
+    		else if(i>0)
+    			retTxt+=", ";
+    		retTxt += sigma[0].split("\\.")[0].replace("_dim","").replace("lvl", "level ")+" is fixed to "+sigma[2].replace("*", "ALL");
+    		i++;
+    	}
+    	return retTxt;
+	}
 	
+	public String getSigmaTextForOriginalAct1(){
+		String dimensionText= "";
+		int j = 0;
+    	for(String[] sigma: SigmaExpressions){
+    		if(j > 0)
+    			dimensionText += ", ";
+    		if(j == SigmaExpressions.size() - 1) 
+    			dimensionText+=" and ";
+    		dimensionText += sigma[0].split("\\.")[0].replace("_dim", "")+" to be equal to "+sigma[2].replace("*", "ALL")+"";
+    		j++;
+    	}
+    	return dimensionText;
+	}
 	
+	public String getGammaTextForOriginalAct1(){
+		String dimensionText= "";
+		int j = 0;
+    	for(String[] gamma: GammaExpressions){
+    		if(j > 0)
+    			dimensionText += ", ";
+    		if(j==GammaExpressions.size()-1)
+    			dimensionText += " and ";
+    		dimensionText+=gamma[0].replace("_dim", "")+" at "+gamma[1].replace("lvl", "level ");
+    		j++;
+    	}
+    	return dimensionText;
+	}
 }

@@ -51,6 +51,12 @@ public abstract class Task {
 		return cubeQuery.get(id);
 	}
 	
+	public void addSubTask(CubeQuery cubequery, int difference, int replace, long strTime, CubeBase cubeBase) {
+		addNewSubTask();
+		cubeQuery.add(cubequery);
+    	getLastSubTask().createSubTask(cubequery, difference, replace,  strTime,  cubeBase);
+	}
+	
     public abstract void generateSubTasks(CubeBase cubeBase);
 	
 	public abstract void constructActEpidoses(Act currentAct);
