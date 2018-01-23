@@ -2,6 +2,8 @@ package TaskMgr;
 
 import storymgr.Act;
 import CubeMgr.CubeBase.CubeBase;
+import CubeMgr.CubeBase.CubeQuery;
+import CubeMgr.StarSchema.SqlQuery;
 
 public class TaskIntro extends Task {
 
@@ -10,7 +12,9 @@ public class TaskIntro extends Task {
 	}
 
 	@Override
-	public void generateSubTasks(CubeBase DB) {
+    public void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery,
+    		SubTask OriginSbTsk, String measure){
+    	
 		this.addNewSubTask();
 	}
 	

@@ -91,7 +91,7 @@ public class PptxFile extends FileMgr {
 
 		setRelationshipForNotes(slide, 2);
 
-		createSlideWithXMlAudio(slide, episode.getAudio().getFileName(), 2, 1);
+		createSlideWithXMlAudio(slide, episode.getFilenameAudio(), 2, 1);
 	}
 
 	protected void createSummarySlide(PptxSlide episode, int slideId) {
@@ -137,7 +137,7 @@ public class PptxFile extends FileMgr {
 				.replace("~~", "").replace("##", ""));
 
 		setRelationshipForNotes(slide, slideId);
-		createSlideWithXMlAudio(slide, episode.getAudio().getFileName(),
+		createSlideWithXMlAudio(slide, episode.getFilenameAudio(),
 				slideId, 1);
 	}
 

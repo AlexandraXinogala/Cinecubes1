@@ -41,4 +41,28 @@ public abstract class Episode {
 		this.highlight = highlight;
 	}
 
+	public String getHighlightMaxValue(){
+		String maxText = "";
+		if(highlight.get(0).semanticValue.size()>1)
+    		maxText+="s";
+		maxText += " with " + highlight.get(0).maxcolor_name + " "; 
+		return maxText;
+	}
+	
+	public String getHighlightMinValue(){
+		String minText = "";
+		if(highlight.get(1).semanticValue.size()>1)
+    		minText += "s";
+		minText += " with " + highlight.get(0).mincolor_name + " color. "; 
+		return minText;
+	}
+	
+	public boolean checkDifferenceFromOrigin(int value){
+		return subTask.get(0).getDifferenceFromOrigin(0) == value;
+	}
+	
+	public boolean checkCountOfSubTask(){
+		return subTask.get(0).getDifferencesFromOrigin().size() > 1;
+	}
+	
 }

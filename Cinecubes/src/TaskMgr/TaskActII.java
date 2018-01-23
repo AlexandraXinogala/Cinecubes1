@@ -20,12 +20,35 @@ public class TaskActII extends Task {
 		super();
 	}
 
-	public void generateSubTasks(CubeBase cubeBase) {
+    public void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery, SubTask OriginSbTsk,
+    		String measure){
 		/* highlight for Original */
+    	addNewSubTask();
+		getLastSubTask().setExtractionMethod(createCubeQueryStartOfActSlide( "II", measure));
+		getLastSubTask().execute(cubeBase.getDatabase());
+		getSubTasks().add(OriginSbTsk);
+		addCubeQuery(cubequery);
 		generateSubTasks_per_row(cubeBase);
 		generateSubTasks_per_col(cubeBase);
 	}
 
+	public SqlQuery createCubeQueryStartOfActSlide(String num_act, String measure) {
+		long strTime = System.nanoTime();
+		CubeQuery cubequery = new CubeQuery("Act " + String.valueOf(num_act));
+		cubequery.setAggregateFunction( "Act " + String.valueOf(num_act));
+		cubequery.addMeasure(1,measure);
+		cubequery.setBasicStoredCube(null);
+		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
+		addCubeQuery(cubequery);
+		SqlQuery newSqlQuery = new SqlQuery();
+		strTime = System.nanoTime();
+		newSqlQuery.produceExtractionMethod(cubequery);
+		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
+		cubequery.setSqlQuery(newSqlQuery);
+		return newSqlQuery;
+
+	}  
+    
 	private void generateSubTasks_per_row(CubeBase cubeBase) {
 		SqlQuery newSqlQuery = this.cubeQuery.get(1).getSqlQuery();
 		HashSet<String> col_per_row = new HashSet<String>();
@@ -96,23 +119,17 @@ public class TaskActII extends Task {
 			SqlQuery currentSqlQuery = ((SqlQuery) subtsk.getExtractionMethod());
 			CubeQuery currentCubeQuery = cubeQuery.get(j);
 			PptxSlide newSlide = new PptxSlide();			//go to eppisode
-			newSlide.addCubeQuery(currentCubeQuery);		//
-			Tabular tbl = new Tabular();					//
-			newSlide.setVisual(tbl);						//
+									//
 
 			if ((currentSqlQuery.getResultArray() != null)) {
-			
+				newSlide.addCubeQuery(currentCubeQuery);
 				String[] extraPivot = createExtraPivot(subtsk, origSubtsk, origCubeQuery);
 				/* ====== Compute Pivot Table ======= */
-			
-				newSlide.setTimeCreationTabular(System.nanoTime());
-				tbl.CreatePivotTable(
-						subtsk.getExtractionMethod().getRowPivot(),
-						subtsk.getExtractionMethod().getColPivot(),
-						subtsk.getExtractionMethod().getResultArray(),
-						extraPivot);
-				newSlide.subTimeCreationTabular(System.nanoTime());
-
+				
+				newSlide. computePivotTable (subtsk.getExtractionMethod().getRowPivot(),
+  		 			  subtsk.getExtractionMethod().getColPivot(),
+  		 			  subtsk.getExtractionMethod().getResultArray(),
+  		 			  extraPivot);
 				if (subtsk.getHighlight() == null)
 					subtsk.setHighlight(new HighlightTable());
 
@@ -125,10 +142,7 @@ public class TaskActII extends Task {
 					PptxSlide tmpSlide = (PptxSlide) currentAct
 							.getEpisode(currentAct.getNumEpisodes() - 1);
 					long strTimecombine = System.nanoTime();
-					String[][] SlideTable = tmpSlide.getVisual()
-							.getPivotTable();
-					String[][] currentTable = tbl.getPivotTable();
-					String[][] newTable = customCopyArray(SlideTable, currentTable);
+					String[][] newTable = tmpSlide.customCopyArray(newSlide);
 					tmpSlide.getVisual().setPivotTable(newTable);
 					tmpSlide.addTimeCombineSlide(System.nanoTime()- strTimecombine);
 					tmpSlide.addTimeCreationTabular(newSlide.getTimeCreationTabular());
@@ -142,12 +156,8 @@ public class TaskActII extends Task {
 				}
 			} else if (currentSqlQuery.getTitleosColumns() != null
 					&& currentSqlQuery.getTitleosColumns().contains("Act")) {
-				newSlide.setTimeCreationText(0);
-				newSlide.setTimeCreationText(System.nanoTime());
-				newSlide.setTitle(currentSqlQuery.getTitleosColumns());
-				newSlide.setTimeCreationText( System.nanoTime());
-
-				newSlide.addSubTask(subtsk);
+				newSlide.createNewSlide(currentCubeQuery, subtsk,
+		    			currentSqlQuery.getTitleosColumns());
 				currentAct.addEpisode(newSlide);
 			}
 		}
@@ -219,7 +229,7 @@ public class TaskActII extends Task {
 				currentSlide.subTimeComputeHighlights(System.nanoTime());
 
 			}
-			currentSlide.computeColorTable(tbl);   	
+			currentSlide.computeColorTable();   	
 		}
 	}
 
@@ -241,78 +251,6 @@ public class TaskActII extends Task {
 						toArray()[subtsk.getDifferencesFromOrigin().get(1)].toString();
 			}
 			return extraPivot;
-	}
-
-	private String[][] customCopyArray(String[][] SlideTable, String[][] currentTable) {
-		int rows_width = SlideTable.length + currentTable.length;
-		TreeSet<String> cols = new TreeSet<String>();
-		for (int i = 2; i < SlideTable[0].length; i++)
-			cols.add(SlideTable[0][i]);
-		for (int i = 2; i < currentTable[0].length; i++)
-			cols.add(currentTable[0][i]);
-		String[][] newTable = new String[rows_width][cols.size() + 2];
-		int col_width = SlideTable[0].length;
-		if (SlideTable[0].length < currentTable[0].length) {
-			col_width = currentTable[0].length;
-		}
-
-		for (int i = 0; i < SlideTable.length; i++) {
-			if (i == 0) {
-				newTable[i][0] = SlideTable[i][0];
-				newTable[i][1] = SlideTable[i][1];
-				for (int j = 0; j < cols.size(); j++) {
-					newTable[i][j + 2] = cols.toArray()[j].toString();
-				}
-			} else {
-				newTable[i][0] = SlideTable[i][0];
-				newTable[i][1] = SlideTable[i][1];
-
-				for (int j = 2; j < newTable[i].length; j++) {
-					newTable[i][j] = "-";
-					for (int k = 0; k < SlideTable[i].length; k++) {
-						if (newTable[0][j].equals(SlideTable[0][k])) {
-							newTable[i][j] = SlideTable[i][k];
-						}
-					}
-				}
-			}
-		}
-
-		for (int cols_index = 0; cols_index < col_width; cols_index++) {
-			newTable[SlideTable.length][cols_index] = "";
-		}
-
-		for (int i = 0; i < currentTable.length; i++) {
-			if (i == 0) {
-				newTable[SlideTable.length + i][0] = currentTable[i][0];
-				newTable[SlideTable.length + i][1] = currentTable[i][1];
-				for (int j = 0; j < cols.size(); j++) {
-					newTable[i][j + 2] = cols.toArray()[j].toString();
-
-				}
-			} else {
-				newTable[SlideTable.length + i][0] = currentTable[i][0];
-				newTable[SlideTable.length + i][1] = currentTable[i][1];
-
-				for (int j = 2; j < newTable[i].length; j++) {
-					newTable[SlideTable.length + i][j] = "-";
-					for (int k = 0; k < currentTable[i].length; k++) {
-						if (newTable[0][j].equals(currentTable[0][k])) {
-							newTable[SlideTable.length + i][j] = currentTable[i][k];
-						}
-					}
-				}
-			}
-		}
-
-		for (int k = 0; k < newTable.length; k++) {
-			for (int l = 0; l < newTable[k].length; l++) {
-				if (newTable[k][l] == null) {
-					newTable[k][l] = "";
-				}
-			}
-		}
-		return newTable;
 	}
 
 }

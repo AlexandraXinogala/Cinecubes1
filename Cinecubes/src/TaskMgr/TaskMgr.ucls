@@ -4,178 +4,154 @@
   router="FAN">  
   <class id="1" language="java" name="TaskMgr.FactCompilation" project="Cinecubes" 
     file="/Cinecubes/src/TaskMgr/FactCompilation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="168" x="1003" y="37"/>    
+    <position height="117" width="168" x="1333" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="TaskMgr.SubTask" project="Cinecubes" file="/Cinecubes/src/TaskMgr/SubTask.java" 
+  <class id="2" language="java" name="TaskMgr.Task" project="Cinecubes" file="/Cinecubes/src/TaskMgr/Task.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="387" width="271" x="1141" y="850"/>    
+    <position height="297" width="274" x="1333" y="194"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="TaskMgr.Task" project="Cinecubes" file="/Cinecubes/src/TaskMgr/Task.java" 
+  <class id="3" language="java" name="TaskMgr.TaskActI" project="Cinecubes" file="/Cinecubes/src/TaskMgr/TaskActI.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="279" width="217" x="1003" y="194"/>    
+    <position height="243" width="680" x="280" y="531"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="TaskMgr.TaskActI" project="Cinecubes" file="/Cinecubes/src/TaskMgr/TaskActI.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="297" width="349" x="1141" y="513"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="TaskMgr.TaskActII" project="Cinecubes" 
+  <class id="4" language="java" name="TaskMgr.TaskActII" project="Cinecubes" 
     file="/Cinecubes/src/TaskMgr/TaskActII.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="297" width="349" x="752" y="513"/>    
+    <position height="189" width="293" x="1000" y="531"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="TaskMgr.TaskFathers" project="Cinecubes" 
+  <class id="5" language="java" name="TaskMgr.TaskFathers" project="Cinecubes" 
     file="/Cinecubes/src/TaskMgr/TaskFathers.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="243" width="332" x="1530" y="513"/>    
+    <position height="243" width="332" x="1333" y="531"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="TaskMgr.TaskIntro" project="Cinecubes" 
+  <class id="6" language="java" name="TaskMgr.TaskIntro" project="Cinecubes" 
     file="/Cinecubes/src/TaskMgr/TaskIntro.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="197" x="278" y="513"/>    
+    <position height="117" width="197" x="1963" y="531"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="TaskMgr.TaskMgr" project="Cinecubes" file="/Cinecubes/src/TaskMgr/TaskMgr.java" 
+  <class id="7" language="java" name="TaskMgr.TaskMgr" project="Cinecubes" file="/Cinecubes/src/TaskMgr/TaskMgr.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="81" width="87" x="1503" y="37"/>    
+    <position height="81" width="87" x="1807" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="TaskMgr.TaskOriginal" project="Cinecubes" 
+  <class id="8" language="java" name="TaskMgr.TaskOriginal" project="Cinecubes" 
     file="/Cinecubes/src/TaskMgr/TaskOriginal.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="197" x="515" y="513"/>    
+    <position height="117" width="197" x="1705" y="531"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="TaskMgr.TaskSummary" project="Cinecubes" 
+  <class id="9" language="java" name="TaskMgr.TaskSummary" project="Cinecubes" 
     file="/Cinecubes/src/TaskMgr/TaskSummary.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="197" x="41" y="513"/>    
+    <position height="117" width="197" x="43" y="531"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="11">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="12" name="substodelete">        
+  <class id="10" language="java" name="TaskMgr.SubTask" project="Cinecubes" file="/Cinecubes/src/TaskMgr/SubTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="423" width="287" x="1361" y="814"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <dependency id="11">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <association id="12">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="13" name="ListTasks">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="13" minimum="0" maximum="2147483647">        
+      <multiplicity id="14" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="14">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
   <association id="15">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="16" name="subschecked">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="17" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+    <bendpoint x="1932" y="531"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="16" name="subTasks"/>      
+      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="18">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
+  <dependency id="18">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
   <generalization id="19">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="TARGET" refId="2"/>  
   </generalization>  
   <generalization id="20">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <generalization id="21">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="22">    
-    <bendpoint x="1892" y="513"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="23" name="subTasks">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="24" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="25">    
-    <end type="SOURCE" refId="4"/>    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <dependency id="21">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="10"/>  
   </dependency>  
-  <association id="26">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="27" name="ListTasks">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="28" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="29">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="30">    
+  <generalization id="22">    
     <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="23">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <dependency id="24">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="10"/>  
   </dependency>  
-  <generalization id="31">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="3"/>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="26">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

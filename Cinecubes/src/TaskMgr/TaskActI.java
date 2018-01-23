@@ -2,11 +2,10 @@ package TaskMgr;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.TreeSet;
 
 import storymgr.Act;
 import storymgr.PptxSlide;
-import storymgr.Tabular;
+
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
 import CubeMgr.CubeBase.Level;
@@ -26,25 +25,43 @@ public class TaskActI extends Task {
     /* Cubequery Version to Generate Subtasks
      * 
      */
-    public void generateSubTasks(CubeBase cubeBase){
+     public void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery,
+    		 SubTask OriginSbTsk, String measure){
+    	long timeSbts = System.nanoTime();
+		addNewSubTask();
+		getLastSubTask().setExtractionMethod(createCubeQueryStartOfActSlide( "I", measure));
+		getLastSubTask().execute(cubeBase.getDatabase());
+		getLastSubTask().setTimeCreationOfSbTsk(System.nanoTime(), timeSbts);
+		getSubTasks().add(OriginSbTsk);
+		addCubeQuery(cubequery);
+		
     	for(int i=0;i<this.cubeQuery.get(1).getSigmaExpressions().size();i++){
     		createSummarizeSubTask(i,cubeBase);
     	} 	
     }
-    
-   public void computePivotTable(PptxSlide newSlide, SubTask subtsk, Tabular tbl,
+     
+     public SqlQuery createCubeQueryStartOfActSlide(String num_act, String measure) {
+ 		long strTime = System.nanoTime();
+ 		CubeQuery cubequery = new CubeQuery("Act " + String.valueOf(num_act));
+ 		cubequery.setAggregateFunction( "Act " + String.valueOf(num_act));
+ 		cubequery.addMeasure(1,measure);
+ 		cubequery.setBasicStoredCube(null);
+ 		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
+
+ 		addCubeQuery(cubequery);
+ 		SqlQuery newSqlQuery = new SqlQuery();
+ 		strTime = System.nanoTime();
+ 		newSqlQuery.produceExtractionMethod(cubequery);
+ 		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
+ 		cubequery.setSqlQuery(newSqlQuery);
+ 		return newSqlQuery;
+
+ 	}  
+     
+   public void computePivotTable(PptxSlide newSlide, SubTask subtsk,
 		   CubeQuery currentCubeQuery,Act currentAct  ){
 	   
-       String[] extraPivot=new String[2];
-       extraPivot[0]="";
-       extraPivot[1]="";
-	   newSlide.setTimeCreationTabular(System.nanoTime());
-	    tbl.CreatePivotTable(subtsk.getExtractionMethod().getRowPivot(),
-	    		 			  subtsk.getExtractionMethod().getColPivot(),
-	    		 			  subtsk.getExtractionMethod().getResultArray(),
-	    		 			  extraPivot);
-	    newSlide.subTimeCreationTabular(System.nanoTime());
-	    currentAct.addEpisode(newSlide);
+     
 	    
 	    if(subtsk.getHighlight()==null)
 	    	subtsk.setHighlight(new HighlightTable());
@@ -59,56 +76,42 @@ public class TaskActI extends Task {
 	    newSlide.getHighlight().add(hlmax);
 	    newSlide.getHighlight().add(hlcmpcol);
 	    newSlide.getHighlight().add(hlcmprow);
-	    calculateHighlights(newSlide, subtsk, hlmin, hlmax, tbl,
-	    		hlcmpcol, hlcmprow, currentCubeQuery);
-	    newSlide.computeColorTable(tbl);   	
+	    if(subtsk.getDifferenceFromOrigin(0)==-1) 
+	    	newSlide.calculateHighlights( subtsk.getExtractionMethod().getResultArray(),
+	    		hlmin, hlmax, hlcmpcol, hlcmprow, currentCubeQuery,
+	    		subtsk.getExtractionMethod().getColPivot(),
+	    		subtsk.getExtractionMethod().getRowPivot(),
+	    		subtsk.getDifferenceFromOrigin(1),cubeQuery.get(1));
+	    newSlide.computeColorTable();   	
    }
     
-   	public void calculateHighlights(PptxSlide newSlide, SubTask subtsk, HighlightMin hlmin,
-   			HighlightMax hlmax, Tabular tbl , HighlightCompareColumn hlcmpcol,
-   			HighlightCompareRow hlcmprow, CubeQuery currentCubeQuery) {
-   		CubeQuery origCubeQuery=this.cubeQuery.get(1);
-   		if(subtsk.getDifferenceFromOrigin(0)==-1) {
-   			int tmp_it=origCubeQuery.getIndexOfSigma(currentCubeQuery.getGammaExpressions().get(subtsk.getDifferenceFromOrigin(1))[0]);
-	       	newSlide.setTimeComputeHighlights(System.nanoTime());
-	       	hlmin.execute(subtsk.getExtractionMethod().getResultArray());
-	       	hlmax.execute(subtsk.getExtractionMethod().getResultArray());
-	       	tbl.boldColumn=getBoldColumn(subtsk.getExtractionMethod().getColPivot(),origCubeQuery.getSigmaExpressions().get(tmp_it)[2]);
-	   		tbl.boldRow=getBoldRow(subtsk.getExtractionMethod().getRowPivot(),origCubeQuery.getSigmaExpressions().get(tmp_it)[2]);
-	       	hlcmpcol.bold=tbl.boldColumn;
-	   		if(tbl.boldColumn>-1) 
-	   			hlcmpcol.execute(tbl.getPivotTable());
-	   		hlcmprow.bold=tbl.boldRow;
-	   		if(tbl.boldRow>-1) 
-	   			hlcmprow.execute(tbl.getPivotTable());
-       	    newSlide.subTimeComputeHighlights(System.nanoTime());
-   		}
-   	} 
-   
+  
       @Override
-    public void constructActEpidoses(Act currentAct) {
-				
+    public void constructActEpidoses(Act currentAct) {			
 		for(int j = 0; j< getNumSubTasks(); j++){
     		if( j == 1 ) 
     			continue;
 			SubTask subtsk= getSubTask(j);
     		SqlQuery currentSqlQuery=((SqlQuery)subtsk.getExtractionMethod());
     		CubeQuery currentCubeQuery = cubeQuery.get(j);
-    		PptxSlide newSlide=new PptxSlide();
-    		
-	        Tabular tbl=new Tabular();
-	        newSlide.setVisual(tbl);    		
+    		PptxSlide newSlide=new PptxSlide();		
 		    
 		    if((currentSqlQuery.getResultArray()!=null)){
 		    	/*====== Compute Pivot Table =======*/
-		    	computePivotTable(newSlide, subtsk, tbl, currentCubeQuery,
+		    	String[] extraPivot=new String[2];
+		        extraPivot[0]="";
+		        extraPivot[1]="";
+		        
+		 	   newSlide.computePivotTable(subtsk.getExtractionMethod().getRowPivot(),
+		 	    		 			  subtsk.getExtractionMethod().getColPivot(),
+		 	    		 			  subtsk.getExtractionMethod().getResultArray(),
+		 	    		 			  extraPivot);
+		 	    currentAct.addEpisode(newSlide);
+		    	computePivotTable(newSlide, subtsk, currentCubeQuery,
 		    			   	      currentAct);
 		    } else if (j == 0) {
-		    	newSlide.addCubeQuery(currentCubeQuery);
-		    	newSlide.addSubTask(subtsk);
-		    	newSlide.setTimeCreationText(System.nanoTime());
-        		newSlide.setTitle(currentSqlQuery.getTitleosColumns());
-        		newSlide.subTimeCreationText(System.nanoTime());
+		    	newSlide.createNewSlide(currentCubeQuery, subtsk,
+		    			currentSqlQuery.getTitleosColumns());
         		currentAct.addEpisode(newSlide);
 		    }
 		    
@@ -185,17 +188,5 @@ public class TaskActI extends Task {
 	     	return ret_value;  
 	}
 	
-	private int getBoldColumn(TreeSet<String> Columns,String nameColumnToBold){
-		for(int j=0;j<Columns.size();j++){
-			if(("'"+Columns.toArray()[j].toString()+"'").equals(nameColumnToBold)) return j+1;
-		}
-		return -1;
-	}
 	
-	private int getBoldRow(TreeSet<String> Rows,String nameRowToBold){
-		for(int i=0;i<Rows.size();i++){
-			if(("'"+Rows.toArray()[i].toString()+"'").equals(nameRowToBold)) return i+1;
-		}
-		return -1;
-	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import storymgr.Act;
 import CubeMgr.CubeBase.CubeBase;
+import CubeMgr.CubeBase.CubeQuery;
 import CubeMgr.StarSchema.Database;
 import CubeMgr.StarSchema.SqlQuery;
 
@@ -20,7 +21,8 @@ public class TaskFathers extends Task {
 	 * @see TaskMgr.Task#generateSubTasks(CubeMgr.CubeBase.CubeBase)
 	 */
 	@Override
-	 public void generateSubTasks(CubeBase cubeBase){
+    public void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery,
+    		SubTask OriginSbTsk, String measure){
     	SubTask stsk=getLastSubTask();
     	SqlQuery Sbsql=(SqlQuery) stsk.getExtractionMethod();
     	ArrayList<String[]> lst=findFathers(cubeBase,Sbsql);

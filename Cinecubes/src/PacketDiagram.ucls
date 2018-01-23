@@ -1,172 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.14" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
-  <package id="1" language="java" name="AudioMgr" project="Cinecubes" file="/Cinecubes/src/AudioMgr" binary="false" 
+  <package id="1" language="java" name="HelpTask" project="Cinecubes" file="/Cinecubes/src/HelpTask" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="98" y="311"/>    
+    <position height="-1" width="-1" x="154" y="571"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="2" language="java" name="CubeMgr" project="Cinecubes" file="/Cinecubes/src/CubeMgr" binary="false" 
+  <package id="2" language="java" name="" project="Cinecubes" file="/Cinecubes/src" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="101" x="489" y="37"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="AudioMgr" project="Cinecubes" file="/Cinecubes/src/AudioMgr" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="600" y="328"/>    
+    <position height="-1" width="-1" x="747" y="290"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="3" language="java" name="" project="Cinecubes" file="/Cinecubes/src" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="50" width="101" x="506" y="37"/>    
+  <package id="4" language="java" name="CubeMgr" project="Cinecubes" file="/Cinecubes/src/CubeMgr" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="157" y="242"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="4" language="java" name="HighlightMgr" project="Cinecubes" file="/Cinecubes/src/HighlightMgr" 
+  <package id="5" language="java" name="CubeMgr.CubeBase" project="Cinecubes" file="/Cinecubes/src/CubeMgr/CubeBase" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="133" y="468"/>    
+    <position height="-1" width="-1" x="138" y="444"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="5" language="java" name="ParserMgr" project="Cinecubes" file="/Cinecubes/src/ParserMgr" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="50" width="101" x="243" y="127"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="6" language="java" name="WrapUpMgr" project="Cinecubes" file="/Cinecubes/src/WrapUpMgr" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="50" width="101" x="384" y="127"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="7" language="java" name="TaskMgr" project="Cinecubes" file="/Cinecubes/src/TaskMgr" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="50" width="101" x="182" y="307"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="8" language="java" name="CubeMgr.StarSchema" project="Cinecubes" file="/Cinecubes/src/CubeMgr/StarSchema" 
+  <package id="6" language="java" name="CubeMgr.StarSchema" project="Cinecubes" file="/Cinecubes/src/CubeMgr/StarSchema" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="404" y="471"/>    
+    <position height="-1" width="-1" x="420" y="459"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="9" language="java" name="HelpTask" project="Cinecubes" file="/Cinecubes/src/HelpTask" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="431" y="603"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="10" language="java" name="CubeMgr.CubeBase" project="Cinecubes" file="/Cinecubes/src/CubeMgr/CubeBase" 
+  <package id="7" language="java" name="HighlightMgr" project="Cinecubes" file="/Cinecubes/src/HighlightMgr" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="637" y="437"/>    
+    <position height="-1" width="-1" x="738" y="520"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="11" language="java" name="storymgr" project="Cinecubes" file="/Cinecubes/src/storymgr" binary="false" 
+  <package id="8" language="java" name="ParserMgr" project="Cinecubes" file="/Cinecubes/src/ParserMgr" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="50" width="101" x="384" y="217"/>    
+    <position height="-1" width="-1" x="255" y="71"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="12" language="java" name="TextMgr" project="Cinecubes" file="/Cinecubes/src/TextMgr" binary="false" 
+  <package id="9" language="java" name="storymgr" project="Cinecubes" file="/Cinecubes/src/storymgr" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="417" y="341"/>    
+    <position height="-1" width="-1" x="596" y="207"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="10" language="java" name="TaskMgr" project="Cinecubes" file="/Cinecubes/src/TaskMgr" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="353" y="277"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="11" language="java" name="TextMgr" project="Cinecubes" file="/Cinecubes/src/TextMgr" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="578" y="353"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="12" language="java" name="WrapUpMgr" project="Cinecubes" file="/Cinecubes/src/WrapUpMgr" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="759" y="160"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <dependency id="13">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="8"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
   </dependency>  
   <dependency id="14">    
-    <bendpoint x="658" y="127"/>    
-    <bendpoint x="683" y="206"/>    
-    <bendpoint x="663" y="386"/>    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="10"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="12"/>  
   </dependency>  
   <dependency id="15">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="9"/>  
   </dependency>  
   <dependency id="16">    
-    <end type="SOURCE" refId="6"/>    
+    <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="11"/>  
   </dependency>  
   <dependency id="17">    
-    <bendpoint x="340" y="337"/>    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="4"/>  
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="5"/>  
   </dependency>  
   <dependency id="18">    
-    <bendpoint x="496" y="307"/>    
     <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="10"/>  
+    <end type="TARGET" refId="5"/>  
   </dependency>  
   <dependency id="19">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="4"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
   </dependency>  
   <dependency id="20">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="5"/>  
   </dependency>  
   <dependency id="21">    
-    <bendpoint x="515" y="127"/>    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="10"/>  
   </dependency>  
   <dependency id="22">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
   </dependency>  
   <dependency id="23">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="7"/>  
   </dependency>  
   <dependency id="24">    
-    <bendpoint x="475" y="307"/>    
-    <bendpoint x="475" y="397"/>    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="8"/>  
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="7"/>  
   </dependency>  
   <dependency id="25">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="10"/>  
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="5"/>  
   </dependency>  
   <dependency id="26">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="12"/>  
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="7"/>  
   </dependency>  
   <dependency id="27">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="28">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="29">    
-    <bendpoint x="416" y="392"/>    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="30">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <dependency id="31">    
-    <end type="SOURCE" refId="3"/>    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="6"/>  
   </dependency>  
+  <dependency id="28">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="31">    
+    <bendpoint x="265" y="220"/>    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
   <dependency id="32">    
-    <bendpoint x="273" y="397"/>    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="8"/>  
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
   </dependency>  
   <dependency id="33">    
-    <bendpoint x="252" y="397"/>    
-    <bendpoint x="252" y="487"/>    
-    <end type="SOURCE" refId="7"/>    
+    <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="9"/>  
   </dependency>  
   <dependency id="34">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="10"/>  
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
   </dependency>  
   <dependency id="35">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="36">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="4"/>  
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="6"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

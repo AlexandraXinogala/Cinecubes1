@@ -12,58 +12,41 @@ public class TextExtractionPPTX extends TextExtraction {
     	super();
     }
    
-    public String createTextForOriginalAct1(CubeQuery cubeQuery,ArrayList<Highlight> htable){
+    public String createTextForOriginalAct1(CubeQuery cubeQuery,String max, String min){
     	String dimensionText="Here, you can see the answer of the original query. You have specified ";
-    	String maxText="You can observe the results in this table. We highlight the largest value";
-    	String minText="and the lowest value";
+    	String maxText="You can observe the results in this table. We highlight the largest value" + max;
+    	String minText="and the lowest value" + min;
     	dimensionText += cubeQuery.getSigmaTextForOriginalAct1();
     	dimensionText += ". We report on " + cubeQuery.getAggregateFunction() +
     			" of " + cubeQuery.getListMeasure().get(0).getName() + " grouped by ";
     	dimensionText += cubeQuery.getGammaTextForOriginalAct1();
-    	if(htable.get(0).semanticValue.size()>1)
-    		maxText+="s";
-		maxText += " with " + htable.get(0).maxcolor_name + " "; 
-       	if(htable.get(1).semanticValue.size()>1)
-    		minText += "s";
-		minText += " with " + htable.get(0).mincolor_name + " color. "; 
-		return dimensionText+" .\n" + maxText + minText;
+		return (dimensionText+" .\n" + maxText + minText).replace("  ", " ");
     }
     
     public String createTextForOriginalAct2(ArrayList<String[]> Gamma,ArrayList<String[]> Sigma,String[][] Result){
     	String dimensionText="In this slide we remind you the result of the original query. \nNow we are going to explain the internal breakdown of " +
     			"this result ";
     	dimensionText+="by drilling down its grouper dimensions. ";
-    	
-    	
     	dimensionText+="\n In the first of the following two slides we will drill-in dimension "+Gamma.get(1)[0]+"."+Gamma.get(1)[1]+". ";
     	dimensionText+="Then we will drill-in dimension "+Gamma.get(0)[0]+"."+Gamma.get(0)[1]+". ";
     	 
 		return dimensionText.replace("  ", " ").replace("_dim.", " at ").replace("_dim", "").replace("lvl", "level ");
     }
     
-    public String createTextForAct1(ArrayList<String[]> GammaCompareTo,
-			ArrayList<String[]> SigmaCompareTo,
-			ArrayList<String[]> SigmaCurrent,
-			String[][] Result,
-			ArrayList<Highlight> htable,
-			int diffGamma,
-			String Aggregate,
-			String Measure){
-    	
+    public String createTextForAct1(CubeQuery cubeQuery,ArrayList<String[]>
+    	SigmaCompareTo,	String[][] Result, String max, String min,
+    	int diffGamma){    	
     	String txtNotes="In this graphic, we put the original request in context by comparing the value";
-    	String[] gammaChange=GammaCompareTo.get(diffGamma);
+    	String[] gammaChange = cubeQuery.getGammaExpressions().get(diffGamma);
     	String[] sigmaOriginal=SigmaCompareTo.get(this.getIndexOfSigma(SigmaCompareTo, gammaChange[0]));
     	
     	txtNotes+=" "+sigmaOriginal[2].replace("*", "ALL")+" for "+sigmaOriginal[0].replace("_dim.lvl"," at level ")+" with its sibling values. We highlight the reference cells with bold, the highest value";
-    	if(htable.get(0).semanticValue.size()>1) txtNotes+="s ";
-    	txtNotes+=" with "+htable.get(0).maxcolor_name+" and the lowest value";
-    	if(htable.get(1).semanticValue.size()>1) txtNotes+="s ";
-    	txtNotes+=" with "+htable.get(1).mincolor_name;
-    	txtNotes+=" color. We calculate the "+Aggregate+" of "+Measure+" while fixing ";
+    	txtNotes+= max + "and the lowest value";
+    	txtNotes+= min +"We calculate the "+ cubeQuery.getAggregateFunction() +" of "+ cubeQuery.getListMeasure().get(0).getName()+" while fixing ";
     	int j=0;
-    	for(String[] sigma:SigmaCurrent){
+    	for(String[] sigma:cubeQuery.getSigmaExpressions()){
     		if(j>0) txtNotes+=", ";
-    		if(j==SigmaCurrent.size()-1) txtNotes+=" and ";
+    		if(j==cubeQuery.getSigmaExpressions().size()-1) txtNotes+=" and ";
     		txtNotes+=sigma[0].replace("_dim.lvl"," at level ")+" to be equal to '"+sigma[2].replace("*", "ALL")+"'";
     		j++;
     	}

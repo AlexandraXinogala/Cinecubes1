@@ -31,16 +31,16 @@ public abstract class FileMgr {
 			if (actItem.getId() == 0) {
 				
 				PptxSlide slide = (PptxSlide) actItem.getEpisodes().get(0);
-				slide.subTimeCreationText(System.nanoTime());
+				slide.subTimeCreationPutInPPTX(System.nanoTime());
 					
 				createIntroSlide(slide,slide_so_far_created);
-				slide.subTimeCreationText(System.nanoTime());
+				slide.subTimeCreationPutInPPTX(System.nanoTime());
 				slide_so_far_created += actItem.getEpisodes().size();
 			} else if (actItem.getId() == -1) {
 				PptxSlide slide = (PptxSlide) actItem.getEpisodes().get(0);
-				slide.setTimeCreationText(System.nanoTime());
+				slide.setTimeCreationPutInPPTX(System.nanoTime());
 				createSummarySlide(slide, slide_so_far_created + 2);
-				slide.subTimeCreationText(System.nanoTime());
+				slide.subTimeCreationPutInPPTX(System.nanoTime());
 				slide_so_far_created += actItem.getEpisodes().size();
 			} else if (actItem.getEpisodes().size() > 1
 					|| actItem.getId() == 20) {
@@ -48,13 +48,12 @@ public abstract class FileMgr {
 					
 					PptxSlide slide = (PptxSlide) actItem.getEpisodes().get(j);
 
-					slide.setTimeCreationText(System.nanoTime());
+					slide.setTimeCreationPutInPPTX(System.nanoTime());
 
 					if (slide.getTitle().contains("Act"))
-						createNewSlide(null, null, slide.getAudio()
-								.getFileName(), slide.getTitle(), j
-								+ slide_so_far_created + 2, null, null,
-								slide.getSubTitle(), null,
+						createNewSlide(null, null, slide.getFilenameAudio(),
+							 slide.getTitle(), j + slide_so_far_created + 2,
+							 null, null, slide.getSubTitle(), null,
 								(actItem.getId() == 3 ? 0 : 1));
 					else if (slide.getNotes().length() == 0) {
 						Tabular tmp_tbl = ((Tabular) slide.getVisual());
@@ -67,16 +66,15 @@ public abstract class FileMgr {
 					} else {
 						Tabular tmp_tbl = ((Tabular) slide.getVisual());
 						createNewSlide(slide.getVisual().getPivotTable(),
-								tmp_tbl.colortable, slide.getAudio()
-										.getFileName(), slide.getTitle(), j
-										+ slide_so_far_created + 2,
+								tmp_tbl.colortable, slide.getFilenameAudio(),
+								slide.getTitle(), j+ slide_so_far_created + 2,
 								slide.getTitleColumn(), slide.getTitleRow(),
 								slide.getSubTitle(),
 								(Tabular) slide.getVisual(),
 								(actItem.getId() == 3 ? 0 : 1));
 						addNotesOnSlide(slide.getNotes());
 					}
-					slide.subTimeCreationText(System.nanoTime());
+					slide.subTimeCreationPutInPPTX(System.nanoTime());
 				}
 				slide_so_far_created += actItem.getEpisodes().size();
 			}

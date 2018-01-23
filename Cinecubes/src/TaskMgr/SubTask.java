@@ -69,6 +69,9 @@ public class SubTask {
 		return differencesFromOrigin.get(i);
 	}
 
+	public boolean checkOriginSubTask(){
+		return extractionMethod.getResult().getResultArray() == null;
+	}
 	
 	public void addDifferenceFromOrigin(int num){
 		this.differencesFromOrigin.add(num);

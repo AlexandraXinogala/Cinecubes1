@@ -60,9 +60,9 @@ public class AdditionElementsOnPPTX {
 								slide.getNotes());
 					else
 						addAudiotoPPTX(j + slide_so_far_created + 2, slide
-								.getAudio().getFileName(), slide.getNotes());
+								.getFilenameAudio(), slide.getNotes());
 
-					slide.addTimeCreationText(System.nanoTime() - strTime);
+					slide.addTimeCreationPutInPPTX(System.nanoTime() - strTime);
 				}
 				slide_so_far_created += actItem.getEpisodes().size();
 			}

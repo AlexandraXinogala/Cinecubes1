@@ -1,8 +1,6 @@
 package CubeMgr.StarSchema;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-
 import HelpTask.ExtractionMethod;
 
 
@@ -109,16 +107,8 @@ public class SqlQuery extends ExtractionMethod {
     
    public void printQuery(){
     	System.out.println(toString());
-    	printBorderLine();
     }
     
-    
-   private void printBorderLine(){
-    	System.out.println("=====================================");
-    }
-    /*
-     *  
-     */
     public String toString(){
     	String ret_value="SELECT "+getSelectClause();
     	ret_value+="\nFROM "+ getFromClause();

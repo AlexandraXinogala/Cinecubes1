@@ -19,8 +19,9 @@ public class TaskOriginal extends Task {
 	}
 
 	@Override
-	public void generateSubTasks(CubeBase cubeBase) {
-		this.addNewSubTask();
+    public void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery,
+    		SubTask OriginSbTsk, String measure){
+    	this.addNewSubTask();
 		SqlQuery newSqlQuery = new SqlQuery();
         long time_produce_original = System.nanoTime();
         newSqlQuery.produceExtractionMethod(this.cubeQuery.get(0));
@@ -82,7 +83,7 @@ public class TaskOriginal extends Task {
     	newSlide.subTimeComputeHighlights(System.nanoTime());
     	
     	/*====== Compute Color Table =======*/
-    	newSlide.computeColorTable(tbl); 
+    	newSlide.computeColorTable(); 
     	/*====== Calculate domination Highlioghts =======*/
     	long start_creation_domination = System.nanoTime();
 		newSlide.addTimeComputeHighlights(System.nanoTime() - start_creation_domination);
