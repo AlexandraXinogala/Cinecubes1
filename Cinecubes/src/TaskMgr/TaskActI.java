@@ -2,19 +2,10 @@ package TaskMgr;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import storymgr.Act;
-import storymgr.PptxSlide;
-
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
 import CubeMgr.CubeBase.Level;
 import CubeMgr.StarSchema.SqlQuery;
-import HighlightMgr.HighlightCompareColumn;
-import HighlightMgr.HighlightCompareRow;
-import HighlightMgr.HighlightMax;
-import HighlightMgr.HighlightMin;
-import HighlightMgr.HighlightTable;
 
 public class TaskActI extends Task {
 
@@ -57,67 +48,7 @@ public class TaskActI extends Task {
  		return newSqlQuery;
 
  	}  
-     
-   public void computePivotTable(PptxSlide newSlide, SubTask subtsk,
-		   CubeQuery currentCubeQuery,Act currentAct  ){
-	   
-     
-	    
-	    if(subtsk.getHighlight()==null)
-	    	subtsk.setHighlight(new HighlightTable());
-	  
-	    HighlightMin hlmin=new HighlightMin();
-	    HighlightMax hlmax=new HighlightMax();
-	    HighlightCompareColumn hlcmpcol=new HighlightCompareColumn();
-   		HighlightCompareRow hlcmprow=new HighlightCompareRow();
-   		newSlide.addSubTask(subtsk);
-   		newSlide.addCubeQuery(currentCubeQuery);
-   		newSlide.getHighlight().add(hlmin);
-	    newSlide.getHighlight().add(hlmax);
-	    newSlide.getHighlight().add(hlcmpcol);
-	    newSlide.getHighlight().add(hlcmprow);
-	    if(subtsk.getDifferenceFromOrigin(0)==-1) 
-	    	newSlide.calculateHighlights( subtsk.getExtractionMethod().getResultArray(),
-	    		hlmin, hlmax, hlcmpcol, hlcmprow, currentCubeQuery,
-	    		subtsk.getExtractionMethod().getColPivot(),
-	    		subtsk.getExtractionMethod().getRowPivot(),
-	    		subtsk.getDifferenceFromOrigin(1),cubeQuery.get(1));
-	    newSlide.computeColorTable();   	
-   }
-    
-  
-      @Override
-    public void constructActEpidoses(Act currentAct) {			
-		for(int j = 0; j< getNumSubTasks(); j++){
-    		if( j == 1 ) 
-    			continue;
-			SubTask subtsk= getSubTask(j);
-    		SqlQuery currentSqlQuery=((SqlQuery)subtsk.getExtractionMethod());
-    		CubeQuery currentCubeQuery = cubeQuery.get(j);
-    		PptxSlide newSlide=new PptxSlide();		
-		    
-		    if((currentSqlQuery.getResultArray()!=null)){
-		    	/*====== Compute Pivot Table =======*/
-		    	String[] extraPivot=new String[2];
-		        extraPivot[0]="";
-		        extraPivot[1]="";
-		        
-		 	   newSlide.computePivotTable(subtsk.getExtractionMethod().getRowPivot(),
-		 	    		 			  subtsk.getExtractionMethod().getColPivot(),
-		 	    		 			  subtsk.getExtractionMethod().getResultArray(),
-		 	    		 			  extraPivot);
-		 	    currentAct.addEpisode(newSlide);
-		    	computePivotTable(newSlide, subtsk, currentCubeQuery,
-		    			   	      currentAct);
-		    } else if (j == 0) {
-		    	newSlide.createNewSlide(currentCubeQuery, subtsk,
-		    			currentSqlQuery.getTitleosColumns());
-        		currentAct.addEpisode(newSlide);
-		    }
-		    
-		}
-	}
-    
+      
     private void createSummarizeSubTask(int i,CubeBase cubeBase){
     	Level parentLvl = cubeQuery.get(1).getNameParentLevel(i);
 		if(parentLvl==null)

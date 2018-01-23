@@ -1,10 +1,7 @@
 package TaskMgr;
 
-import storymgr.Act;
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
-import CubeMgr.StarSchema.SqlQuery;
-
 
 public class TaskSummary extends Task {
 
@@ -18,10 +15,6 @@ public class TaskSummary extends Task {
 		this.addNewSubTask();
 	}
 
-	@Override
-	public void constructActEpidoses(Act currentAct) {
-	//	PptxSlide tmpslide=new PptxSlide();
-	//	currentAct.addEpisode(tmpslide);
-	}
+
 
 }

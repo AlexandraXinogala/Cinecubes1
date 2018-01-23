@@ -492,4 +492,31 @@ public class PptxSlide extends Episode {
 	}
 	
 	
+	public String[][] createResultArray(){
+		String[][] allResult = null;
+		int data_length = 0;
+		for (int k = 0; k < subTask.size(); k++) {
+			data_length += getSubTasks().get(k)
+					.getExtractionMethod().getResultArray().length - 2;
+		}
+		allResult = new String[data_length + 2][3];
+		int pos_to_copy = 0;
+		for (int k = 0; k < subTask.size(); k++) {
+			if (k == 0) {
+				System.arraycopy(subTask.get(k).getExtractionMethod().
+					getResultArray(), 0,allResult, pos_to_copy, 
+					subTask.get(k).getExtractionMethod().getResultArray().length);
+				pos_to_copy += subTask.get(k).getExtractionMethod().
+						getResultArray().length;
+			} else {
+				System.arraycopy(subTask.get(k).getExtractionMethod().
+						getResultArray(), 2,allResult, pos_to_copy, subTask.get(k).
+						getExtractionMethod().getResultArray().length - 2);
+				pos_to_copy += subTask.get(k).getExtractionMethod().
+						getResultArray().length - 2;
+			}
+		}
+		return allResult;
+	}
+	
 }

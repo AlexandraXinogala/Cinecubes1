@@ -3,8 +3,6 @@ package TaskMgr;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import storymgr.Act;
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
 import CubeMgr.StarSchema.Database;
@@ -137,9 +135,4 @@ public class TaskFathers extends Task {
 		}
 	}
 
-	@Override
-	public void constructActEpidoses(Act currentAct) {
-		// TODO Auto-generated method stub
-		
-	}
 }

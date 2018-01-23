@@ -1,11 +1,8 @@
 package TaskMgr;
 
 import java.util.ArrayList;
-
-import storymgr.Act;
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
-import CubeMgr.StarSchema.SqlQuery;
 
 /**
  * @author  Asterix
@@ -60,5 +57,4 @@ public abstract class Task {
 	}
 	
     public abstract void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery, SubTask OriginSbTsk, String measure);
-	public abstract void constructActEpidoses(Act currentAct);
 }

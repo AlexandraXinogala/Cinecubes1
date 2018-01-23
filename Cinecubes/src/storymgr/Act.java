@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 import CubeMgr.CubeManager;
 import CubeMgr.CubeBase.CubeQuery;
+import CubeMgr.StarSchema.SqlQuery;
+import HighlightMgr.HighlightCompareColumn;
+import HighlightMgr.HighlightCompareRow;
+import HighlightMgr.HighlightDominationColumn;
+import HighlightMgr.HighlightDominationRow;
+import HighlightMgr.HighlightMax;
+import HighlightMgr.HighlightMin;
 import HighlightMgr.HighlightTable;
 import TaskMgr.SubTask;
 import TaskMgr.Task;
@@ -89,7 +96,6 @@ public class Act {
 		tsk = new TaskIntro();
 		tsk.addCubeQuery(cubequery);
 		tsk.generateSubTasks(CubeManager.getCubeBase(),cubequery,null,"");
-		tsk.constructActEpidoses(this);
 		PptxSlide tmpslide=new PptxSlide();
 		addEpisode(tmpslide);
 		tmpslide.createSlideIntro(isAudioOn,txtMgr, tsk.getCubeQuery(0)); 
@@ -100,7 +106,7 @@ public class Act {
 		tsk =new TaskOriginal();
 		tsk.addCubeQuery(cubequery);
 		tsk.generateSubTasks(CubeManager.getCubeBase(),cubequery, null, "");
-		tsk.constructActEpidoses(this);
+		constructOriginalActEpidoses();
 		SubTask OriginSbTsk = tsk.getLastSubTask();
 		if (OriginSbTsk.getExtractionMethod().getResult().getResultArray() == null) {
 			System.err.println("Your query does not have result. Try again!");
@@ -110,13 +116,69 @@ public class Act {
 		creationTime = System.nanoTime() - creationTime;
 		return OriginSbTsk;
 	}
+	
+	public void constructOriginalActEpidoses() {
+		PptxSlide newSlide = new PptxSlide();
+		SubTask subtsk = tsk.getSubTask(0);
+		CubeQuery currentCubeQuery = tsk.getCubeQuery(0);
+    	Tabular tbl = new Tabular();
+    	String[] extraPivot = new String[2];
+    	 if(subtsk.getHighlight()==null)
+    		 subtsk.setHighlight(new HighlightTable());
+
+    	HighlightMin hlmin = new HighlightMin();
+    	HighlightMax hlmax = new HighlightMax();
+    	HighlightDominationRow hldomrow = new HighlightDominationRow();
+    	HighlightDominationColumn hldomcol = new HighlightDominationColumn();
+	    newSlide.addSubTask(subtsk);
+	    newSlide.getHighlight().add(hlmin);
+	    newSlide.getHighlight().add(hlmax);
+	    newSlide.getHighlight().add(hldomcol);
+	    newSlide.getHighlight().add(hldomrow);
+    	newSlide.addCubeQuery(currentCubeQuery);
+    	
+        newSlide.setVisual(tbl);
+        
+        
+        extraPivot[0] = "";
+        extraPivot[1] = "";
+		
+	    /*====== Compute Pivot Table =======*/
+    	newSlide.setTimeCreationTabular(System.nanoTime());
+	    tbl.CreatePivotTable(subtsk.getExtractionMethod().getRowPivot(),
+	    		 			  subtsk.getExtractionMethod().getColPivot(),
+	    		 			  subtsk.getExtractionMethod().getResultArray(),
+	    		 			  extraPivot);
+	    newSlide.subTimeCreationTabular(System.nanoTime());
+	    addEpisode(newSlide);
+	    
+	    /*====== Calculate Highlioghts =======*/
+    	newSlide.setTimeComputeHighlights(System.nanoTime());
+    	hlmin.execute(subtsk.getExtractionMethod().getResultArray());
+    	hlmax.execute(subtsk.getExtractionMethod().getResultArray());
+    	
+    	hldomcol.semanticValue = hlmax.semanticValue;
+    	hldomcol.helpValues2 = hlmin.semanticValue;
+    	hldomcol.execute(tbl.getPivotTable());
+    	
+    	hldomrow.semanticValue = hlmax.semanticValue;
+    	hldomrow.helpValues2 = hlmin.semanticValue;
+    	hldomrow.execute(tbl.getPivotTable());
+    	newSlide.subTimeComputeHighlights(System.nanoTime());
+    	
+    	/*====== Compute Color Table =======*/
+    	newSlide.computeColorTable(); 
+    	/*====== Calculate domination Highlioghts =======*/
+    	long start_creation_domination = System.nanoTime();
+		newSlide.addTimeComputeHighlights(System.nanoTime() - start_creation_domination);
+	}
 
 	public Act doTaskActI(CubeQuery cubequery, SubTask OriginSbTsk ,boolean isAudioOn,  CubeManager CubeManager,String measure){
 		ArrayList<PptxSlide> slideToEnd = new ArrayList<PptxSlide>();
 		tsk =new TaskActI();
 		
 		tsk.generateSubTasks(CubeManager.getCubeBase(), cubequery, OriginSbTsk, measure);
-		tsk.constructActEpidoses(this);
+		constructActIEpidoses();
 		slideToEnd = setupTextAct1(cubequery, isAudioOn);
 		creationTime = System.nanoTime() - creationTime;
 		if (slideToEnd.size() > 0) {
@@ -126,8 +188,6 @@ public class Act {
 		}
 		return null;
 	}
-	
-
 	
 	private ArrayList<PptxSlide> setupTextAct1(CubeQuery origCubeQuery, boolean isAudioOn) {
 		ArrayList<Integer> numSlideToRemove = new ArrayList<Integer>();
@@ -171,8 +231,8 @@ public class Act {
 		
 		tsk.generateSubTasks(CubeManager.getCubeBase(), cubequery, OriginSbTsk, measure);
 		if (tsk.getNumSubTasks() > 2) {
-			tsk.constructActEpidoses(this);
-			this.setupTextAct2(cubequery,OriginSbTsk, isAudioOn);
+			constructActIIEpidoses() ;
+			setupTextAct2(cubequery,OriginSbTsk, isAudioOn);
 		}
 		creationTime = System.nanoTime() - creationTime;
 	}
@@ -230,7 +290,6 @@ public class Act {
 	public void doSummaryTask(ArrayList<Act> acts, boolean isAudioOn,  CubeManager CubeManager){
 		tsk = new TaskSummary();
 		tsk.generateSubTasks(CubeManager.getCubeBase(), null, null, "");
-		tsk.constructActEpidoses(this);
 		PptxSlide tmpslide=new PptxSlide();
 		tmpslide.createSlideEnd(isAudioOn, composeActHighlights(acts));
 		addEpisode(tmpslide);
@@ -253,4 +312,172 @@ public class Act {
 		return notesFromAct;
 	}
 
+	
+	public void createHighlightEpisode(){
+		for (int i = 1; i < getNumEpisodes(); i++) {
+			PptxSlide currentSlide = (PptxSlide) getEpisode(i);
+			currentSlide.getHighlight().clear();
+			if (currentSlide.getSubTasks().get(0).getDifferencesFromOrigin()
+					.size() > 1) {
+
+				HighlightMin hlmin = new HighlightMin();
+				HighlightMax hlmax = new HighlightMax();
+				HighlightDominationColumn hldomcol = new HighlightDominationColumn();
+				currentSlide.getHighlight().add(hlmin);
+				currentSlide.getHighlight().add(hlmax);
+				currentSlide.getHighlight().add(hldomcol);
+				String[][] allResult = currentSlide.createResultArray();
+				currentSlide.setTimeComputeHighlights(System.nanoTime());
+				hlmin.execute(allResult);
+				hlmax.execute(allResult);
+
+				hldomcol.semanticValue = hlmax.semanticValue;
+				hldomcol.helpValues2 = hlmin.semanticValue;
+				hldomcol.execute(((Tabular) currentSlide.getVisual()).getPivotTable());
+
+				currentSlide.subTimeComputeHighlights(System.nanoTime());
+					
+			} else {
+				HighlightMin hlmin = new HighlightMin();
+				HighlightMax hlmax = new HighlightMax();
+				currentSlide.getHighlight().add(hlmin);
+				currentSlide.getHighlight().add(hlmax);
+				currentSlide.setTimeComputeHighlights(System.nanoTime());
+				hlmin.execute(currentSlide.getSubTasks().get(0)
+						.getExtractionMethod().getResultArray());
+				hlmax.execute(currentSlide.getSubTasks().get(0)
+						.getExtractionMethod().getResultArray());
+				currentSlide.subTimeComputeHighlights(System.nanoTime());
+
+			}
+			currentSlide.computeColorTable();   	
+		}
+	}
+	
+	public void constructActIIEpidoses() {
+		SubTask origSubtsk = tsk.getSubTask(1);
+		CubeQuery origCubeQuery = tsk.getCubeQuery(1);
+		for (int j = 0; j < tsk.getNumSubTasks(); j++) {
+			if (j == 1)
+				continue;
+			SubTask subtsk = tsk.getSubTask(j);
+			SqlQuery currentSqlQuery = ((SqlQuery) subtsk.getExtractionMethod());
+			CubeQuery currentCubeQuery = tsk.getCubeQuery(j);
+			PptxSlide newSlide = new PptxSlide();			//go to eppisode
+									//
+
+			if ((currentSqlQuery.getResultArray() != null)) {
+				newSlide.addCubeQuery(currentCubeQuery);
+				String[] extraPivot = createExtraPivot(subtsk, origSubtsk, origCubeQuery);
+				/* ====== Compute Pivot Table ======= */
+				
+				newSlide. computePivotTable (subtsk.getExtractionMethod().getRowPivot(),
+  		 			  subtsk.getExtractionMethod().getColPivot(),
+  		 			  subtsk.getExtractionMethod().getResultArray(),
+  		 			  extraPivot);
+				if (subtsk.getHighlight() == null)
+					subtsk.setHighlight(new HighlightTable());
+
+				if (subtsk.getDifferencesFromOrigin().size() > 0
+						&& (subtsk.getDifferencesFromOrigin().get(0) == -4 ||
+						subtsk.getDifferencesFromOrigin().get(0) == -5)
+						&& subtsk.getDifferencesFromOrigin().get(1) > 0) {
+
+					/* ====== Combine Subtask and Pivot Table ======= */
+					PptxSlide tmpSlide = (PptxSlide) getEpisode(getNumEpisodes() - 1);
+					long strTimecombine = System.nanoTime();
+					String[][] newTable = tmpSlide.customCopyArray(newSlide);
+					tmpSlide.getVisual().setPivotTable(newTable);
+					tmpSlide.addTimeCombineSlide(System.nanoTime()- strTimecombine);
+					tmpSlide.addTimeCreationTabular(newSlide.getTimeCreationTabular());
+					tmpSlide.addTimeComputeHighlights(newSlide.getTimeComputeHighlights());
+					tmpSlide.addSubTask(subtsk);
+					tmpSlide.addCubeQuery(currentCubeQuery);
+
+				} else {
+					newSlide.addSubTask(subtsk);
+					addEpisode(newSlide);
+				}
+			} else if (currentSqlQuery.getTitleosColumns() != null
+					&& currentSqlQuery.getTitleosColumns().contains("Act")) {
+				newSlide.createNewSlide(currentCubeQuery, subtsk,
+		    			currentSqlQuery.getTitleosColumns());
+				addEpisode(newSlide);
+			}
+		}
+		createHighlightEpisode();
+	
+	}
+	
+	public String[] createExtraPivot(SubTask subtsk,SubTask origSubtsk, CubeQuery origCubeQuery){
+		String[] extraPivot = new String[2];
+		extraPivot[0] = "";
+		extraPivot[1] = "";
+		
+		if (subtsk.getDifferencesFromOrigin().size() > 0
+				&& subtsk.getDifferencesFromOrigin().get(0) == -4) {
+			extraPivot[0] = String.valueOf(subtsk.getDifferencesFromOrigin().get(0));
+			extraPivot[1] = origSubtsk.getExtractionMethod().getRowPivot().
+					toArray()[subtsk.getDifferencesFromOrigin().get(1)].toString();
+		}
+		if (subtsk.getDifferencesFromOrigin().size() > 0
+				&& subtsk.getDifferencesFromOrigin().get(0) == -5) {
+			extraPivot[0] = String.valueOf(subtsk.getDifferencesFromOrigin().get(0));
+			extraPivot[1] = origCubeQuery.getSqlQuery().getColPivot().
+					toArray()[subtsk.getDifferencesFromOrigin().get(1)].toString();
+		}
+		return extraPivot;
+}
+	
+	 public void constructActIEpidoses() {			
+			for(int j = 0; j< tsk.getNumSubTasks(); j++){
+	    		if( j == 1 ) 
+	    			continue;
+				SubTask subtsk= tsk.getSubTask(j);
+	    		SqlQuery currentSqlQuery=((SqlQuery)subtsk.getExtractionMethod());
+	    		CubeQuery currentCubeQuery = tsk.getCubeQuery(j);
+	    		PptxSlide newSlide=new PptxSlide();		
+			    
+			    if((currentSqlQuery.getResultArray()!=null)){
+			    	/*====== Compute Pivot Table =======*/
+			    	String[] extraPivot=new String[2];
+			        extraPivot[0]="";
+			        extraPivot[1]="";
+			        
+			 	   newSlide.computePivotTable(subtsk.getExtractionMethod().getRowPivot(),
+			 	    		 			  subtsk.getExtractionMethod().getColPivot(),
+			 	    		 			  subtsk.getExtractionMethod().getResultArray(),
+			 	    		 			  extraPivot);
+			 	    addEpisode(newSlide);
+			    	computePivotTable(newSlide, subtsk, currentCubeQuery );
+			    } else if (j == 0) {
+			    	newSlide.createNewSlide(currentCubeQuery, subtsk,
+			    			currentSqlQuery.getTitleosColumns());
+	        		addEpisode(newSlide);
+			    }
+			    
+			}
+		}
+	 public void computePivotTable(PptxSlide newSlide, SubTask subtsk,
+			   CubeQuery currentCubeQuery){
+		   	if(subtsk.getHighlight()==null)
+		    	subtsk.setHighlight(new HighlightTable());
+		    HighlightMin hlmin=new HighlightMin();
+		    HighlightMax hlmax=new HighlightMax();
+		    HighlightCompareColumn hlcmpcol=new HighlightCompareColumn();
+	   		HighlightCompareRow hlcmprow=new HighlightCompareRow();
+	   		newSlide.addSubTask(subtsk);
+	   		newSlide.addCubeQuery(currentCubeQuery);
+	   		newSlide.getHighlight().add(hlmin);
+		    newSlide.getHighlight().add(hlmax);
+		    newSlide.getHighlight().add(hlcmpcol);
+		    newSlide.getHighlight().add(hlcmprow);
+		    if(subtsk.getDifferenceFromOrigin(0)==-1) 
+		    	newSlide.calculateHighlights( subtsk.getExtractionMethod().getResultArray(),
+		    		hlmin, hlmax, hlcmpcol, hlcmprow, currentCubeQuery,
+		    		subtsk.getExtractionMethod().getColPivot(),
+		    		subtsk.getExtractionMethod().getRowPivot(),
+		    		subtsk.getDifferenceFromOrigin(1),tsk.getCubeQuery(1));
+		    newSlide.computeColorTable();   	
+	   }
 }
