@@ -2,8 +2,10 @@ package CubeMgr.CubeBase;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
-import CubeMgr.StarSchema.SqlQuery;
+import HelpTask.ExtractionMethod;
+import HelpTask.SqlQuery;
 
 public class CubeQuery extends Cube {
 
@@ -33,17 +35,9 @@ public class CubeQuery extends Cube {
 	 * @uml.associationEnd  
 	 */
 	private BasicStoredCube referCube;
-	
-	public CubeQuery(String name, String aggregateFunction, Measure msrToAdd, String[][] gamma, String[][] sigma ){
-		super(name);
-	}
-	
+
 	public void setBasicStoredCube(BasicStoredCube referCube){
 		this.referCube = referCube;
-	}
-	
-	public BasicStoredCube getBasicStoredCube() {
-		return referCube;
 	}
 		
 	public void setAggregateFunction(String AggregateFunction){
@@ -83,18 +77,6 @@ public class CubeQuery extends Cube {
 		GammaExpressions.add(toadd);
 	}
 
-	public SqlQuery getSqlQuery(){
-		return sqlQuery;
-	}
-	
-	public void createSqlQuery(){
-		
-	}
-	
-	public void setSqlQuery(SqlQuery sqlQuery){
-		this.sqlQuery =  sqlQuery;
-	}
-	
 	public void addSigmaExpression(String tablefield, String operator,
 			String value) {
 		String toadd[] = new String[3];
@@ -316,4 +298,125 @@ public class CubeQuery extends Cube {
     	}
     	return dimensionText;
 	}
+	
+	 public ExtractionMethod produceExtractionMethod()  {
+		 SqlQuery newSqlQuery = new SqlQuery();
+			if(Msr.get(0).getAttribute() !=null ) 
+				newSqlQuery.addReturnedFields(AggregateFunction,Msr.get(0).getAttribute().getName());
+			else
+				newSqlQuery.addReturnedFields(AggregateFunction,"");
+			HashSet<String> FromTables=new HashSet<String>();
+			
+			/*Create WhereClausse */
+			for(String[] sigmaExpr: SigmaExpressions){
+				for(int i = 0;i < referCube.getListDimension().size(); i++) {
+					Dimension dimension = referCube.getListDimension().get(i);
+					String[] tmp=sigmaExpr[0].split("\\.");
+					if(dimension.name.equals(tmp[0])){
+						 /* FOR JOIN WITH Basic CUBE*/
+						 String toaddJoin[]=new String[3];
+						 toaddJoin[0] = referCube.getDimensionRefField().get(i);
+						 toaddJoin[1] = "=";
+						 toaddJoin[2] = dimension.getTableName()+"."+((LinearHierarchy)dimension.getHier().get(0)).lvls.get(0).lvlAttributes.get(0).getAttribute().getName();
+						 newSqlQuery.addFilter(toaddJoin);
+						 
+						 FromTables.add(dimension.getTableName());
+						 
+						 /* Add the Sigma Expression */
+						 ArrayList<Hierarchy> current_hierachy=dimension.getHier();
+						 String toaddSigma[]=new String[3];
+						 toaddSigma[0]=dimension.getTableName()+".";
+						 for(int k=0;k<current_hierachy.size();k++){//for each hierarchy of dimension
+							List<Level> current_lvls=current_hierachy.get(k).lvls;
+							for(int l=0;l<current_lvls.size();l++){
+								if(current_lvls.get(l).getName().equals(tmp[1])){
+									toaddSigma[0]+=current_lvls.get(l).lvlAttributes.get(0).getAttribute().getName();
+								}
+							}
+						}
+						toaddSigma[1]=sigmaExpr[1];
+						toaddSigma[2]=sigmaExpr[2];
+						newSqlQuery.addFilter(toaddSigma);					 
+					}
+				}
+			}
+			
+			/*Create From clause */
+			String[] tbl_tmp = new String[1];
+			tbl_tmp[0] = "";
+			if(referCube != null) 
+				tbl_tmp[0] = referCube.FactTable().getTableName();
+			newSqlQuery.addSourceCube(tbl_tmp);
+			
+			for(int i=0;i<FromTables.size();i++){
+				String[] toAdd=new String[1];
+				toAdd[0]=(String) FromTables.toArray()[i];
+				newSqlQuery.addSourceCube(toAdd);
+			}
+			
+			
+			/*Create groupClausse*/
+			for(String[] gammaExpr: GammaExpressions){
+				if(gammaExpr[0].length()==0) {
+					String[] toadd=new String[1];
+					toadd[0]=gammaExpr[1];
+					newSqlQuery.addGroupers(toadd);
+				}
+				else{
+					for(int i=0;i<referCube.getListDimension().size();i++){
+						Dimension dimension= referCube.getListDimension().get(i);
+						if(dimension.name.equals(gammaExpr[0])){
+							String[] toadd=new String[1];
+							toadd[0]=dimension.getTableName()+".";
+							ArrayList<Hierarchy> current_hierachy=dimension.getHier();
+							for(int k=0;k<current_hierachy.size();k++){//for each hierarchy of dimension
+								List<Level> current_lvls=current_hierachy.get(k).lvls;
+								for(int l=0;l<current_lvls.size();l++){
+									if(current_lvls.get(l).getName().equals(gammaExpr[1])){
+										/* FOR JOIN WITH Basic CUBE*/
+										 String toaddJoin[]=new String[3];
+										 toaddJoin[0]=referCube.getDimensionRefField().get(i);
+										 toaddJoin[1]="=";
+										 toaddJoin[2]=dimension.getTableName()+"."+((LinearHierarchy)dimension.getHier().get(0)).lvls.get(0).lvlAttributes.get(0).getAttribute().getName();
+										 newSqlQuery.addFilter(toaddJoin);
+										 String[] toAddfrom=new String[1];
+										 toAddfrom[0]=dimension.getTableName();
+										 if(FromTables.contains(dimension.getTableName())==false) 
+											 newSqlQuery.addSourceCube(toAddfrom);
+										
+										toadd[0]+=current_lvls.get(l).lvlAttributes.get(0).getAttribute().getName();
+									}
+								}
+							}
+							
+							newSqlQuery.addGroupers(toadd);
+						}
+					}
+				}
+			}
+			sqlQuery= newSqlQuery;
+			return newSqlQuery;
+		}
+	 
+	 public int getSizeRowPivot() {
+		 return sqlQuery.getRowPivot().size();
+	 }
+	 
+	 public String[][] getResultArray() {
+		 return sqlQuery.getResultArray();
+	 }
+	 
+	 
+	 public String getValueFromRowPivot(int i){
+		 return sqlQuery.getRowPivot().toArray()[i].toString();
+	 }
+	 
+	 public int getSizeColPivot() {
+		 return sqlQuery.getColPivot().size();
+	 }
+		 
+	 public String getValueFromColPivot(int i){
+		 return sqlQuery.getColPivot().toArray()[i].toString();
+	 }
+	 
 }

@@ -1,12 +1,13 @@
-package TaskMgr;
+/*package TaskMgr;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
 import CubeMgr.StarSchema.Database;
-import CubeMgr.StarSchema.SqlQuery;
+import HelpTask.SqlQuery;
 
 public class TaskFathers extends Task {
 
@@ -17,7 +18,7 @@ public class TaskFathers extends Task {
 	
 	/* (non-Javadoc)
 	 * @see TaskMgr.Task#generateSubTasks(CubeMgr.CubeBase.CubeBase)
-	 */
+	 *//*
 	@Override
     public void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery,
     		SubTask OriginSbTsk, String measure){
@@ -60,7 +61,7 @@ public class TaskFathers extends Task {
 				 * That I do with Cube and Dimension
 				 * of tmp2[1] and after must create the tmp_query
 				 * SELECT DISTINCT <<father of tmp2[1] >> + " FROM "+table
-				 */
+				 *//*
 				//String father
 				String tmp_query = "SELECT DISTINCT " + tmp2[1] + " FROM "+ table 
 						+ " WHERE " + tmp2[1] + "!=" + condition[2];
@@ -136,3 +137,4 @@ public class TaskFathers extends Task {
 	}
 
 }
+*/

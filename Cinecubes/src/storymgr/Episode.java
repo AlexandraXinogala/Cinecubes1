@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import AudioMgr.Audio;
 import HighlightMgr.Highlight;
+import HighlightMgr.HighlightDominationColumn;
+import HighlightMgr.HighlightDominationRow;
+import HighlightMgr.HighlightMax;
+import HighlightMgr.HighlightMin;
 import TaskMgr.SubTask;
 
 public abstract class Episode {
@@ -12,11 +16,22 @@ public abstract class Episode {
     protected Visual visual;   
     protected Audio audio;
     protected ArrayList<Highlight> highlight;
+    protected long timeComputeHighlights;
+    
+	public void addTimeComputeHighlights(long time ){
+		timeComputeHighlights += time;
+	}
+    
+
+	public long getTimeComputeHighlights(){
+		return timeComputeHighlights;
+	}
     
     public Episode(){    	
     	audio=new Audio();
     	subTask=new ArrayList<SubTask>();
     	setHighlight(new ArrayList<Highlight>());
+    	timeComputeHighlights=0;
     }
 	
 	public ArrayList<SubTask> getSubTasks() {
@@ -30,8 +45,6 @@ public abstract class Episode {
 	public void addSubTask(SubTask subtask) {
 		subTask.add(subtask);
 	}
-	
-	abstract public void setVisual(Visual vis);
 
 	public ArrayList<Highlight> getHighlight() {
 		return highlight;
@@ -64,5 +77,71 @@ public abstract class Episode {
 	public boolean checkCountOfSubTask(){
 		return subTask.get(0).getDifferencesFromOrigin().size() > 1;
 	}
+
 	
+	abstract public void computeColorTable();
+	
+	abstract public Visual getVisual();
+	
+	abstract public String[][] createResultArray();
+	
+	
+	public void createHighlightEpisode(){
+		highlight.clear();
+		if (getSubTasks().get(0).getDifferencesFromOrigin().size() > 1) {
+
+			HighlightMin hlmin = new HighlightMin();
+			HighlightMax hlmax = new HighlightMax();
+			HighlightDominationColumn hldomcol = new HighlightDominationColumn();
+			highlight.add(hlmin);
+			highlight.add(hlmax);
+			highlight.add(hldomcol);
+			String[][] allResult = createResultArray();
+			this.timeComputeHighlights = System.nanoTime();
+			hlmin.execute(allResult);
+			hlmax.execute(allResult);
+			hldomcol.semanticValue = hlmax.semanticValue;
+			hldomcol.helpValues2 = hlmin.semanticValue;
+			hldomcol.execute(((Tabular) getVisual()).getPivotTable());
+			timeComputeHighlights = System.nanoTime()  - timeComputeHighlights;
+				
+		} else {
+			HighlightMin hlmin = new HighlightMin();
+			HighlightMax hlmax = new HighlightMax();
+			highlight.add(hlmin);
+			highlight.add(hlmax);
+			this.timeComputeHighlights = System.nanoTime();
+			hlmin.execute(getSubTasks().get(0)
+					.getExtractionMethod().getResultArray());
+			hlmax.execute(getSubTasks().get(0)
+					.getExtractionMethod().getResultArray());
+			timeComputeHighlights = System.nanoTime()  - timeComputeHighlights;
+		}
+		computeColorTable();   	
+	}
+	
+	public void calculateHighlights(SubTask subTask){
+	   	HighlightMin hlmin = new HighlightMin();
+    	HighlightMax hlmax = new HighlightMax();
+    	HighlightDominationRow hldomrow = new HighlightDominationRow();
+    	HighlightDominationColumn hldomcol = new HighlightDominationColumn();
+	    addSubTask(subTask);
+	    getHighlight().add(hlmin);
+	    getHighlight().add(hlmax);
+	    getHighlight().add(hldomcol);
+	    getHighlight().add(hldomrow);
+		timeComputeHighlights = System.nanoTime();
+    	hlmin.execute(subTask.getExtractionMethod().getResultArray());
+    	hlmax.execute(subTask.getExtractionMethod().getResultArray());
+    	
+    	hldomcol.semanticValue = hlmax.semanticValue;
+    	hldomcol.helpValues2 = hlmin.semanticValue;
+    	hldomcol.execute(getVisual().getPivotTable());
+    	
+    	hldomrow.semanticValue = hlmax.semanticValue;
+    	hldomrow.helpValues2 = hlmin.semanticValue;
+    	hldomrow.execute(getVisual().getPivotTable());
+    	timeComputeHighlights = System.nanoTime()  - timeComputeHighlights;
+	}
+
 }

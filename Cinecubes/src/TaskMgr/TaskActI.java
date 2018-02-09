@@ -2,10 +2,10 @@ package TaskMgr;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
 import CubeMgr.CubeBase.Level;
-import CubeMgr.StarSchema.SqlQuery;
 
 public class TaskActI extends Task {
 
@@ -20,36 +20,17 @@ public class TaskActI extends Task {
     		 SubTask OriginSbTsk, String measure){
     	long timeSbts = System.nanoTime();
 		addNewSubTask();
-		getLastSubTask().setExtractionMethod(createCubeQueryStartOfActSlide( "I", measure));
-		getLastSubTask().execute(cubeBase.getDatabase());
-		getLastSubTask().setTimeCreationOfSbTsk(System.nanoTime(), timeSbts);
+		addCubeQuery(getLastSubTask().createNewExtractionMethod( "I", measure));
+		getLastSubTask().execute(cubeBase);
+		getLastSubTask().addTimeCreationOfSbTsk(System.nanoTime(), timeSbts);
 		getSubTasks().add(OriginSbTsk);
 		addCubeQuery(cubequery);
-		
-    	for(int i=0;i<this.cubeQuery.get(1).getSigmaExpressions().size();i++){
+		for(int i=0;i<this.cubeQuery.get(1).getSigmaExpressions().size();i++){
     		createSummarizeSubTask(i,cubeBase);
     	} 	
     }
-     
-     public SqlQuery createCubeQueryStartOfActSlide(String num_act, String measure) {
- 		long strTime = System.nanoTime();
- 		CubeQuery cubequery = new CubeQuery("Act " + String.valueOf(num_act));
- 		cubequery.setAggregateFunction( "Act " + String.valueOf(num_act));
- 		cubequery.addMeasure(1,measure);
- 		cubequery.setBasicStoredCube(null);
- 		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
-
- 		addCubeQuery(cubequery);
- 		SqlQuery newSqlQuery = new SqlQuery();
- 		strTime = System.nanoTime();
- 		newSqlQuery.produceExtractionMethod(cubequery);
- 		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
- 		cubequery.setSqlQuery(newSqlQuery);
- 		return newSqlQuery;
-
- 	}  
-      
-    private void createSummarizeSubTask(int i,CubeBase cubeBase){
+           
+    public void createSummarizeSubTask(int i,CubeBase cubeBase){
     	Level parentLvl = cubeQuery.get(1).getNameParentLevel(i);
 		if(parentLvl==null)
 			return;

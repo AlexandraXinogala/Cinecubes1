@@ -21,6 +21,14 @@ public abstract class Task {
     	subTasks.add(new SubTask());
     };
 	
+    public ArrayList<SubTask> getSubTaskList(){
+    	return subTasks;
+    }
+    
+    public ArrayList<CubeQuery> getCubeQueriesList(){
+    	return cubeQuery;
+    }
+    
 	public int getNumSubTasks(){
     	return subTasks.size();
     }

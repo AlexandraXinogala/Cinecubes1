@@ -1,8 +1,10 @@
 package test;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFNotes;
 import org.apache.poi.xslf.usermodel.XSLFShape;
@@ -15,11 +17,12 @@ public class PptxParser {
 	public PptxParser() { }
 	
 	public static void main(final String[] args) {
-
-		for (int i = 1; i < 4; i++) {
-			String oldFileName = "TestFiles/CubeQueryLoan" + i + "A.pptx";
-			String newFileName = "OutputFiles/CubeQueryLoan" + i + ".pptx";
-
+		String[] fileName = getFilesName();
+		int count =0;
+		for (int i = 0; i < fileName.length; i++) {
+			if (fileName[i].isEmpty()) continue;
+			String oldFileName = "TestFiles/" + fileName[i].replace(".pptx",  "A.pptx") ;
+			String newFileName = "OutputFiles/" +fileName[i];
 			FileInputStream oldInputStream;
 			FileInputStream newInputStream;
 
@@ -41,6 +44,8 @@ public class PptxParser {
 				e.printStackTrace();
 				return;
 			}
+			
+			System.out.println( count++ +") Compare " + fileName[i].replace(".pptx",  "A.pptx") + " with " + fileName[i] );
 			System.out.println("Slides : ");
 			compareSlidesPPT(oldPpt, newPpt);
 			System.out.println("Notes : ");
@@ -110,4 +115,14 @@ public class PptxParser {
 		return notes;
 	}
 
+	 public static String[] getFilesName() {
+	      File dir = new File("OutputFiles/");
+	      String[] files = dir.list();
+	      if (files == null) 
+	          return null;
+	      for (int i = 0; i < files.length; i++)
+	          if (files[i].contains(".docx"))
+	        	  files[i] = "";
+	      return files;
+	  }
 }

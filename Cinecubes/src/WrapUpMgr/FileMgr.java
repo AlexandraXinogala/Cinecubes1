@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import storymgr.Act;
 import storymgr.FinalResult;
-import storymgr.PptxSlide;
+import storymgr.Slide;
 import storymgr.Story;
 import storymgr.Tabular;
 
@@ -30,23 +30,23 @@ public abstract class FileMgr {
 		for (Act actItem : story.getActs()) {
 			if (actItem.getId() == 0) {
 				
-				PptxSlide slide = (PptxSlide) actItem.getEpisodes().get(0);
+				Slide slide = (Slide) actItem.getEpisode(0);
 				slide.subTimeCreationPutInPPTX(System.nanoTime());
 					
 				createIntroSlide(slide,slide_so_far_created);
 				slide.subTimeCreationPutInPPTX(System.nanoTime());
-				slide_so_far_created += actItem.getEpisodes().size();
+				slide_so_far_created += actItem.getSizeOfEpisodes();
 			} else if (actItem.getId() == -1) {
-				PptxSlide slide = (PptxSlide) actItem.getEpisodes().get(0);
+				Slide slide = (Slide) actItem.getEpisode(0);
 				slide.setTimeCreationPutInPPTX(System.nanoTime());
 				createSummarySlide(slide, slide_so_far_created + 2);
 				slide.subTimeCreationPutInPPTX(System.nanoTime());
-				slide_so_far_created += actItem.getEpisodes().size();
-			} else if (actItem.getEpisodes().size() > 1
+				slide_so_far_created += actItem.getSizeOfEpisodes();
+			} else if (actItem.getSizeOfEpisodes() > 1
 					|| actItem.getId() == 20) {
-				for (int j = 0; j < actItem.getEpisodes().size(); j++) {
+				for (int j = 0; j < actItem.getSizeOfEpisodes(); j++) {
 					
-					PptxSlide slide = (PptxSlide) actItem.getEpisodes().get(j);
+					Slide slide = (Slide) actItem.getEpisode(j);
 
 					slide.setTimeCreationPutInPPTX(System.nanoTime());
 
@@ -76,7 +76,7 @@ public abstract class FileMgr {
 					}
 					slide.subTimeCreationPutInPPTX(System.nanoTime());
 				}
-				slide_so_far_created += actItem.getEpisodes().size();
+				slide_so_far_created += actItem.getSizeOfEpisodes();
 			}
 		}
 		
@@ -98,9 +98,9 @@ public abstract class FileMgr {
 		
 		abstract protected void addNotesOnSlide(String notes); 
 		
-		abstract protected void createIntroSlide(PptxSlide episode, int slide_so_far_created);
+		abstract protected void createIntroSlide(Slide episode, int slide_so_far_created);
 		
-		abstract protected void createSummarySlide(PptxSlide episode, int slideId);
+		abstract protected void createSummarySlide(Slide episode, int slideId);
 		
 		abstract protected void writeOutput(FileOutputStream fout) throws IOException;
 

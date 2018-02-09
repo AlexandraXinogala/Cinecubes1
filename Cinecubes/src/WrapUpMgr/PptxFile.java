@@ -28,7 +28,7 @@ import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
 import org.apache.xmlbeans.XmlObject;
 
-import storymgr.PptxSlide;
+import storymgr.Slide;
 import storymgr.Story;
 import storymgr.Tabular;
 
@@ -66,7 +66,7 @@ public class PptxFile extends FileMgr {
 		slideShowPPTX.write(fout);
 	}
 	
-	protected void createIntroSlide(PptxSlide episode, int count) {
+	protected void createIntroSlide(Slide episode, int count) {
 		slideXml[count] = "";
 		XSLFSlide slide;
 		slide = slideShowPPTX.createSlide(defaultMaster
@@ -94,7 +94,7 @@ public class PptxFile extends FileMgr {
 		createSlideWithXMlAudio(slide, episode.getFilenameAudio(), 2, 1);
 	}
 
-	protected void createSummarySlide(PptxSlide episode, int slideId) {
+	protected void createSummarySlide(Slide episode, int slideId) {
 		XSLFSlide slide;
 		slide = slideShowPPTX.createSlide(defaultMaster
 				.getLayout(SlideLayout.TITLE_AND_CONTENT));
@@ -133,9 +133,7 @@ public class PptxFile extends FileMgr {
 
 			}
 		}
-		episode.setNotes(episode.getNotes().replace("@", "\n")
-				.replace("~~", "").replace("##", ""));
-
+		episode.changeNotes();
 		setRelationshipForNotes(slide, slideId);
 		createSlideWithXMlAudio(slide, episode.getFilenameAudio(),
 				slideId, 1);

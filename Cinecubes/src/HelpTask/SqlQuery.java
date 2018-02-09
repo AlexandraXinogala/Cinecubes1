@@ -1,7 +1,6 @@
-package CubeMgr.StarSchema;
+package HelpTask;
 
 import java.util.ArrayList;
-import HelpTask.ExtractionMethod;
 
 
 public class SqlQuery extends ExtractionMethod {
@@ -136,7 +135,7 @@ public class SqlQuery extends ExtractionMethod {
     }
     
     @Override
-    public void addSelectClauseMeasure(String aggregationFuction, String attribute){
+    public void addReturnedFields(String aggregationFuction, String attribute){
     	SelectClauseMeasure[0] =aggregationFuction;
     	SelectClauseMeasure[1]= attribute;
     }
@@ -159,17 +158,17 @@ public class SqlQuery extends ExtractionMethod {
 	}
 
 	@Override
-	public void addWhereClause(String[] index) {
+	public void addFilter(String[] index) {
 		this.WhereClause.add(index);
 	}
 	
 	@Override
-	public void addGroupByClause(String[] index) {
+	public void addGroupers(String[] index) {
 		this.GroupByClause.add(index);
 	}
 	
 	@Override
-	public void addFromClause(String[] index) {
+	public void addSourceCube(String[] index) {
 		this.FromClause.add(index);
 	}
 	

@@ -2,11 +2,9 @@ package TaskMgr;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
+import java.awt.Color;
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
-import CubeMgr.StarSchema.Database;
-import CubeMgr.StarSchema.SqlQuery;
 import HelpTask.ExtractionMethod;
 import HighlightMgr.Highlight;
 import HighlightMgr.HighlightTable;
@@ -23,34 +21,26 @@ public class SubTask {
     
     public SubTask(){
     	differencesFromOrigin=new ArrayList<Integer>();
+    	highlight = new HighlightTable();
     }
         
-    public boolean execute(Database dB){
+    public boolean execute(CubeBase cubeBase){
     	timeExecutionQuery=System.nanoTime();
-    	ResultSet rset=dB.executeSql(extractionMethod.toString());
+    	ResultSet rset=cubeBase.getDatabase().executeSql(extractionMethod.toString());
     	timeExecutionQuery=System.nanoTime()-timeExecutionQuery;
     	return extractionMethod.setResult(rset);
     };
-     
-	public void setTimeProduceOfCubeQuery(long end, long start){
-		timeProduceOfCubeQuery = end - start;
-	}
-
-	public void setTimeProduceOfExtractionMethod(long end, long start){
+ 
+    public void addTimeProduceOfExtractionMethod(long end, long start){
 		timeProduceOfExtractionMethod = end - start;
 	}
 	
-	public void setTimeCreationOfSbTsk(long end, long start){
+	public void addTimeCreationOfSbTsk(long end, long start){
 		timeCreationOfSbTsk = end - start;
 	}
 	
 	public Highlight getHighlight() {
 		return highlight;
-	}
-
-	
-	public void setHighlight(Highlight Hghlght) {
-		highlight = Hghlght;
 	}
 
 	public ExtractionMethod getExtractionMethod() {
@@ -79,20 +69,33 @@ public class SubTask {
 	
 	public void createSubTask(CubeQuery cubequery,int difference,int replace, long strTime, CubeBase cubeBase){
 		long endTime=System.nanoTime();
-		SqlQuery newSqlQuery=new SqlQuery();
         long strTimeProduce=System.nanoTime();
-        newSqlQuery.produceExtractionMethod(cubequery);
+        extractionMethod =  cubequery.produceExtractionMethod();
         timeProduceOfExtractionMethod = System.nanoTime() - strTimeProduce;
-        cubequery.setSqlQuery(newSqlQuery);
-        setExtractionMethod(newSqlQuery);
         if (replace == 1) 
         	 differencesFromOrigin.add(-1);
-        HighlightTable hltbl=new HighlightTable();
-        setHighlight(hltbl);
         differencesFromOrigin.add(difference);
     	timeProduceOfCubeQuery = endTime - strTime;
 		timeCreationOfSbTsk = System.nanoTime() - strTime;
-		execute(cubeBase.getDatabase());
+		execute(cubeBase);
+	}
+	 	
+	public CubeQuery createNewExtractionMethod(String num_act, String measure){
+		long strTime = System.nanoTime();
+ 		CubeQuery cubequery = new CubeQuery("Act " + String.valueOf(num_act));
+ 		cubequery.setAggregateFunction( "Act " + String.valueOf(num_act));
+ 		cubequery.addMeasure(1,measure);
+ 		cubequery.setBasicStoredCube(null);
+ 		timeProduceOfCubeQuery = System.nanoTime() - strTime;
+ 		strTime = System.nanoTime();
+ 		extractionMethod =  cubequery.produceExtractionMethod();
+  		timeProduceOfCubeQuery = System.nanoTime() - strTime;
+ 		return cubequery;
 	}
 	
+	public void job(String[][] pivotTable,Color[][]  colorTable){
+		HighlightTable hltbl = (HighlightTable) getHighlight();
+		hltbl.findDominatedRowsColumns(pivotTable, colorTable);
+		
+	}
 }

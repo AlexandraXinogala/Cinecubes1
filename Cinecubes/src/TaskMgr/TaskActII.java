@@ -1,9 +1,9 @@
 package TaskMgr;
 
 import java.util.HashSet;
+
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
-import CubeMgr.StarSchema.SqlQuery;
 
 
 public class TaskActII extends Task {
@@ -16,38 +16,19 @@ public class TaskActII extends Task {
     		String measure){
 		/* highlight for Original */
     	addNewSubTask();
-		getLastSubTask().setExtractionMethod(createCubeQueryStartOfActSlide( "II", measure));
-		getLastSubTask().execute(cubeBase.getDatabase());
+    	addCubeQuery(getLastSubTask().createNewExtractionMethod( "II", measure));
+		getLastSubTask().execute(cubeBase);
 		getSubTasks().add(OriginSbTsk);
 		addCubeQuery(cubequery);
 		generateSubTasks_per_row(cubeBase);
 		generateSubTasks_per_col(cubeBase);
 	}
-
-	public SqlQuery createCubeQueryStartOfActSlide(String num_act, String measure) {
-		long strTime = System.nanoTime();
-		CubeQuery cubequery = new CubeQuery("Act " + String.valueOf(num_act));
-		cubequery.setAggregateFunction( "Act " + String.valueOf(num_act));
-		cubequery.addMeasure(1,measure);
-		cubequery.setBasicStoredCube(null);
-		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
-		addCubeQuery(cubequery);
-		SqlQuery newSqlQuery = new SqlQuery();
-		strTime = System.nanoTime();
-		newSqlQuery.produceExtractionMethod(cubequery);
-		getLastSubTask().setTimeProduceOfCubeQuery(System.nanoTime(), strTime);
-		cubequery.setSqlQuery(newSqlQuery);
-		return newSqlQuery;
-
-	}  
-    
+   
 	private void generateSubTasks_per_row(CubeBase cubeBase) {
-		SqlQuery newSqlQuery = this.cubeQuery.get(1).getSqlQuery();
 		HashSet<String> col_per_row = new HashSet<String>();
-		for (int i = 0; i < newSqlQuery.getRowPivot().size(); i++) {
-			String[][] table = newSqlQuery.getResultArray();
-			String Value = newSqlQuery.getRowPivot().toArray()[i]
-					.toString();
+		for (int i = 0; i < cubeQuery.get(1).getSizeRowPivot(); i++) {
+			String[][] table = cubeQuery.get(1).getResultArray();
+			String Value = cubeQuery.get(1).getValueFromRowPivot(i);
 
 			col_per_row.clear();
 			for (int j = 2; j < table.length; j++) {
@@ -71,14 +52,10 @@ public class TaskActII extends Task {
 	}
 
 	private void generateSubTasks_per_col(CubeBase cubeBase) {
-		SqlQuery newSqlQuery = this.cubeQuery.get(1).getSqlQuery();
-
 		HashSet<String> row_per_col = new HashSet<String>();
-
-		for (int i = 0; i < newSqlQuery.getColPivot().size(); i++) {
-			String[][] table = newSqlQuery.getResultArray();
-			String Value = newSqlQuery.getColPivot().toArray()[i]
-					.toString();
+		for (int i = 0; i < cubeQuery.get(1).getSizeColPivot(); i++) {
+			String[][] table = cubeQuery.get(1).getResultArray();
+			String Value = cubeQuery.get(1).getValueFromColPivot(i);
 			row_per_col.clear();
 			for (int j = 2; j < table.length; j++) {
 				if (table[j][0].equals(Value))

@@ -16,7 +16,7 @@ import java.util.zip.ZipOutputStream;
 
 import storymgr.Act;
 import storymgr.FinalResult;
-import storymgr.PptxSlide;
+import storymgr.Slide;
 import storymgr.Story;
 
 public class AdditionElementsOnPPTX {
@@ -48,10 +48,10 @@ public class AdditionElementsOnPPTX {
 		int slide_so_far_created = 0;
 		unZipZipTime = "Unzip Time\t" + (System.nanoTime() - StartUnzip) + "\n";
 		for (Act actItem : story.getActs()) {
-			if (actItem.getEpisodes().size() > 1 || actItem.getId() == 0
+			if (actItem.getSizeOfEpisodes() > 1 || actItem.getId() == 0
 					|| actItem.getId() == -1 || actItem.getId() == 20) {
-				for (int j = 0; j < actItem.getEpisodes().size(); j++) {
-					PptxSlide slide = (PptxSlide) actItem.getEpisodes().get(j);
+				for (int j = 0; j < actItem.getSizeOfEpisodes(); j++) {
+					Slide slide = (Slide) actItem.getEpisode(j);
 
 					long strTime = System.nanoTime();
 
@@ -64,7 +64,7 @@ public class AdditionElementsOnPPTX {
 
 					slide.addTimeCreationPutInPPTX(System.nanoTime() - strTime);
 				}
-				slide_so_far_created += actItem.getEpisodes().size();
+				slide_so_far_created += actItem.getSizeOfEpisodes();
 			}
 		}
 		long startZip = System.nanoTime();

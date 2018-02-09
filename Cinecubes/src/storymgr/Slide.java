@@ -8,13 +8,13 @@ import TextMgr.TextExtractionPPTX;
 import AudioMgr.AudioEngine;
 import AudioMgr.MaryTTSAudioEngine;
 import CubeMgr.CubeBase.CubeQuery;
-import CubeMgr.StarSchema.SqlQuery;
+import HelpTask.SqlQuery;
 import HighlightMgr.HighlightCompareColumn;
 import HighlightMgr.HighlightCompareRow;
 import HighlightMgr.HighlightMax;
 import HighlightMgr.HighlightMin;
 
-public class PptxSlide extends Episode {
+public class Slide extends Episode {
 	
 	private AudioEngine audioMgr;
 	private String notes;
@@ -29,9 +29,9 @@ public class PptxSlide extends Episode {
 	private long timeCreationColorTable;
 	private long timeCreationPutInPPTX;
 	private long timeCombineSlide;
-	private long timeComputeHighlights;
+
 	
-	public PptxSlide() {
+	public Slide() {
 		super();
 		Title ="";
 		SubTitle ="";
@@ -43,7 +43,7 @@ public class PptxSlide extends Episode {
 	}
 	
 	
-	public PptxSlide(String notes, String title, String subtitle, long timeCreationText){
+	public Slide(String notes, String title, String subtitle, long timeCreationText){
 		super();
 		audioMgr = new MaryTTSAudioEngine();
 		audioMgr.InitializeVoiceEngine();
@@ -62,7 +62,7 @@ public class PptxSlide extends Episode {
 		timeCreationText=0;
 		timeCreationPutInPPTX=0;
 		timeCombineSlide=0;
-		timeComputeHighlights=0;
+		
 	}
 	
 	public void addCubeQuery(CubeQuery cubeQuery){
@@ -81,9 +81,9 @@ public class PptxSlide extends Episode {
 		timeCreationPutInPPTX += now;
 	}
 	
-	public void setTimeCreationTabular(long timeCreationTabular ){
-		this.timeCreationTabular = timeCreationTabular;
-	}
+	//public void setTimeCreationTabular(long timeCreationTabular ){
+	//	this.timeCreationTabular = timeCreationTabular;
+	//}
 	
 	public void subTimeCreationTabular(long now ){
 		timeCreationTabular = now  - timeCreationTabular;
@@ -100,25 +100,7 @@ public class PptxSlide extends Episode {
 	public void addTimeCombineSlide(long time ){
 		timeCombineSlide += time;
 	}
-	
-	public void setTimeComputeHighlights(long timeComputeHighlights ){
-		this.timeComputeHighlights = timeComputeHighlights;
-	}
-	
-	public void subTimeComputeHighlights(long now ){
-		timeComputeHighlights = now  - timeComputeHighlights;
-	}
-	
-	public void addTimeComputeHighlights(long time ){
-		timeComputeHighlights += time;
-	}
-		
 
-	public long getTimeComputeHighlights(){
-		return timeComputeHighlights;
-	}
-	
-	@Override
 	public void setVisual(Visual vis) {
 		this.visual=vis;		
 	}
@@ -142,8 +124,8 @@ public class PptxSlide extends Episode {
 		return notes;
 	}
 
-	public void setNotes(String notes) {
-		this.notes = notes;
+	public void changeNotes() {
+		notes = notes.replace("@", "\n").replace("~~", "").replace("##", "");
 	}
 
 	public String getTitle() {
@@ -154,59 +136,72 @@ public class PptxSlide extends Episode {
 		return SubTitle;
 	}
 
-	public void setSubTitle(String subTitle) {
-		SubTitle = subTitle;
-	}
-
 	public String getTitleColumn() {
 		return TitleColumn;
-	}
-
-	public void setTitleColumn(String titleColumn) {
-		TitleColumn = titleColumn;
 	}
 
 	public String getTitleRow() {
 		return TitleRow;
 	}
-
-	public void setTitleRow(String titleRow) {
-		TitleRow = titleRow;
-	}
 	
 	public void computeColorTable(){
 		timeCreationColorTable = System.nanoTime();
-    	((Tabular)visual).setColorTable(getHighlight());
+    	((Tabular)visual).setColorTable(highlight);
     	timeCreationColorTable = System.nanoTime()  - timeCreationColorTable;      
    	}
 	public void computePivotTable (TreeSet<String> rowPivot,TreeSet<String> colPivot,String queryResult[][], String[] extraPivot ){
 		Tabular tbl = new Tabular();					//
 		setVisual(tbl);
-		setTimeCreationTabular(System.nanoTime());
+		timeCreationTabular = System.nanoTime();
 		tbl.CreatePivotTable(rowPivot, colPivot, queryResult, extraPivot);
 		subTimeCreationTabular(System.nanoTime());
 	}
 	
-	public void calculateHighlights(String[][] Result, HighlightMin hlmin,
-   			HighlightMax hlmax,  HighlightCompareColumn hlcmpcol,
-   			HighlightCompareRow hlcmprow, CubeQuery currentCubeQuery,
-   			TreeSet<String> rowPivot,TreeSet<String> colPivot, int i,
-   			CubeQuery origCubeQuery) {
-   		Tabular tbl = (Tabular) getVisual();
-		int tmp_it=origCubeQuery.getIndexOfSigma(currentCubeQuery.getGammaExpressions().get(i)[0]);
-       	setTimeComputeHighlights(System.nanoTime());
-       	hlmin.execute(Result);
-       	hlmax.execute(Result);
-       	tbl.boldColumn=getBoldColumn(rowPivot,origCubeQuery.getSigmaExpressions().get(tmp_it)[2]);
-   		tbl.boldRow=getBoldRow(colPivot,origCubeQuery.getSigmaExpressions().get(tmp_it)[2]);
-       	hlcmpcol.bold=tbl.boldColumn;
-   		if(tbl.boldColumn>-1) 
-   			hlcmpcol.execute(tbl.getPivotTable());
-   		hlcmprow.bold=tbl.boldRow;
-   		if(tbl.boldRow>-1) 
-   			hlcmprow.execute(tbl.getPivotTable());
-   	    subTimeComputeHighlights(System.nanoTime());
-   	} 
+	 public void computePivotTable(SubTask subtsk,
+			   CubeQuery currentCubeQuery, CubeQuery origCubeQuery){
+		    HighlightMin hlmin=new HighlightMin();
+		    HighlightMax hlmax=new HighlightMax();
+		    HighlightCompareColumn hlcmpcol=new HighlightCompareColumn();
+	   		HighlightCompareRow hlcmprow=new HighlightCompareRow();
+	   		addSubTask(subtsk);
+	   		addCubeQuery(currentCubeQuery);
+	   		getHighlight().add(hlmin);
+		    getHighlight().add(hlmax);
+		    getHighlight().add(hlcmpcol);
+		    getHighlight().add(hlcmprow);
+		    if(subtsk.getDifferenceFromOrigin(0)==-1) {
+		    	Tabular tbl = (Tabular) getVisual();
+				int tmp_it=origCubeQuery.getIndexOfSigma(currentCubeQuery.
+						getGammaExpressions().get(subtsk.getDifferenceFromOrigin(1))[0]);
+				this.timeComputeHighlights = System.nanoTime();
+		       	hlmin.execute(subtsk.getExtractionMethod().getResultArray());
+		       	hlmax.execute(subtsk.getExtractionMethod().getResultArray());
+		       	tbl.boldColumn=getBoldColumn(subtsk.getExtractionMethod().getColPivot(),
+		       			origCubeQuery.getSigmaExpressions().get(tmp_it)[2]);
+		   		tbl.boldRow=getBoldRow(subtsk.getExtractionMethod().getRowPivot(),
+		   				origCubeQuery.getSigmaExpressions().get(tmp_it)[2]);
+		       	hlcmpcol.bold=tbl.boldColumn;
+		   		if(tbl.boldColumn>-1) 
+		   			hlcmpcol.execute(tbl.getPivotTable());
+		   		hlcmprow.bold=tbl.boldRow;
+		   		if(tbl.boldRow>-1) 
+		   			hlcmprow.execute(tbl.getPivotTable());
+		   		timeComputeHighlights = System.nanoTime()  - timeComputeHighlights;
+		    }
+		    	
+		    computeColorTable();   	
+	   }
+	
+	public Slide copySlide(Slide newSlide,CubeQuery currentCubeQuery, SubTask subtsk){
+		long strTimecombine = System.nanoTime();
+		visual.setPivotTable (customCopyArray(newSlide));
+		addTimeCombineSlide(System.nanoTime()- strTimecombine);
+		addTimeCreationTabular(newSlide.timeCreationTabular);
+		addTimeComputeHighlights(newSlide.timeComputeHighlights);
+		addSubTask(subtsk);
+		addCubeQuery(currentCubeQuery);
+		return this;
+	}
 	
 	private int getBoldColumn(TreeSet<String> Columns,String nameColumnToBold){
 		for(int j=0;j<Columns.size();j++){
@@ -277,14 +272,11 @@ public class PptxSlide extends Episode {
 		getVisual().getPivotTable()[0][0] = " Summary for "
 				+ currentCubeQuery.getGammaExpressions()
 						.get(gamma_index_change)[0].split("_")[0];
-		setNotes(((TextExtractionPPTX) txtMgr)
-				.createTextForAct1(
-						currentCubeQuery,
-						origCubeQuery.getSigmaExpressions(),
+		notes =((TextExtractionPPTX) txtMgr).createTextForAct1(
+						currentCubeQuery, origCubeQuery.getSigmaExpressions(),
 						currentSqlQuery.getResult().getResultArray(),
-						getHighlightMaxValue(), 
-						getHighlightMinValue(),
-						subtsk.getDifferenceFromOrigin(1)));
+						getHighlightMaxValue(), getHighlightMinValue(),
+						subtsk.getDifferenceFromOrigin(1));
 		timeCreationText = System.nanoTime()  - timeCreationText;
 		
 		long strTimeTxt = System.nanoTime();
@@ -299,8 +291,7 @@ public class PptxSlide extends Episode {
 				getHighlight().get(3));
 		}
 		timeCreationText += System.nanoTime() - strTimeTxt;
-		setNotes(getNotes() + "\n"
-				+ newNotes);
+		notes +=  "\n"+ newNotes;
 		return newNotes;
 	}
 	
@@ -417,7 +408,7 @@ public class PptxSlide extends Episode {
 	}
 	
 
-	public String[][] customCopyArray(PptxSlide newSlide) {
+	public String[][] customCopyArray(Slide newSlide) {
 		String[][] SlideTable = ((Tabular)getVisual()).getPivotTable();
 		String[][] currentTable = ((Tabular)newSlide.getVisual()).getPivotTable();
 		int rows_width = SlideTable.length + currentTable.length;

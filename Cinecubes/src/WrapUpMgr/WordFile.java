@@ -20,7 +20,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 
-import storymgr.PptxSlide;
+import storymgr.Slide;
 import storymgr.Tabular;
 
 public class WordFile extends FileMgr {
@@ -32,7 +32,7 @@ public class WordFile extends FileMgr {
 	}
 
 	@Override
-	protected void createIntroSlide(PptxSlide episode, int slide_so_far_created) {
+	protected void createIntroSlide(Slide episode, int slide_so_far_created) {
 		XWPFParagraph paragraph = document.createParagraph();
 		XWPFRun run = paragraph.createRun();
 		XWPFRun run2 = paragraph.createRun();
@@ -149,7 +149,7 @@ public class WordFile extends FileMgr {
 	}
 	
 	@Override
-	protected void createSummarySlide(PptxSlide episode, int slideId) {
+	protected void createSummarySlide(Slide episode, int slideId) {
 		XWPFParagraph paragraph = document.createParagraph();
 		XWPFRun runTitle = paragraph.createRun();
 		XWPFRun runText = paragraph.createRun();
@@ -177,8 +177,7 @@ public class WordFile extends FileMgr {
 
 			}
 		}
-		episode.setNotes(episode.getNotes().replace("@", "\n")
-				.replace("~~", "").replace("##", ""));
+		episode.changeNotes();
 	}
 	
 	protected void writeOutput(FileOutputStream fout) throws IOException {

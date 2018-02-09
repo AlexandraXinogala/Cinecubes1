@@ -92,9 +92,9 @@ public class Story {
 	public int getNumberOfSlides(){
 		int num_slide_create = 0;
 		for (Act actItem : Acts) {
-			if (actItem.getEpisodes().size() > 1 || num_slide_create == 0
+			if (actItem.getSizeOfEpisodes() > 1 || num_slide_create == 0
 					|| actItem.getId() == -1 || actItem.getId() == 20)
-				num_slide_create += actItem.getEpisodes().size();
+				num_slide_create += actItem.getSizeOfEpisodes();
 		}
 		return num_slide_create ;
 	}

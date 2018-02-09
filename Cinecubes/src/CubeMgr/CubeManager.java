@@ -52,15 +52,8 @@ public class CubeManager {
 	public CubeQuery createDefaultCubeQuery() {
 		CubeQuery cubequery = new CubeQuery("New Request");
 		cubequery.setAggregateFunction( "AVG");
-		//cubequery.getListMeasure() = new ArrayList<Measure>();
-
-	//Measure msrToAdd = new Measure();
 		Measure msrToAdd = new Measure(1,"Hrs",CBase.getDatabase().getFieldOfSqlTable("adult",
 							"hours_per_week"));
-	//	msrToAdd.setId(1);
-	//	msrToAdd.setName( "Hrs");
-	//	msrToAdd.setAttribute( CBase.getDatabase().getFieldOfSqlTable("adult",
-	//			"hours_per_week"));
 		cubequery.getListMeasure().add(msrToAdd);
 		cubequery.addGammaExpression("marital_dim", "lvl0");
 		cubequery.addGammaExpression("education_dim", "lvl1");
@@ -118,9 +111,6 @@ public class CubeManager {
 		/* Search for Measure */
 		Measure msrToAdd = new Measure(1,measureName,CBase.getDatabase().getFieldOfSqlTable(Cbname,
 				measureName));
-		//msrToAdd.setId(1);
-	//	msrToAdd.setName( measureName);
-	//	msrToAdd.setAttribute( ;
 		cubequery.getListMeasure().add(msrToAdd);
 		msrname = measureName;
 		/* Need work to done up here */

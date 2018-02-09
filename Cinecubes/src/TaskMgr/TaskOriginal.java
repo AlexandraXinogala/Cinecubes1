@@ -2,8 +2,7 @@ package TaskMgr;
 
 import CubeMgr.CubeBase.CubeBase;
 import CubeMgr.CubeBase.CubeQuery;
-import CubeMgr.StarSchema.SqlQuery;
-
+import HelpTask.ExtractionMethod;
 
 public class TaskOriginal extends Task {
 
@@ -14,15 +13,14 @@ public class TaskOriginal extends Task {
 	@Override
     public void generateSubTasks(CubeBase cubeBase,CubeQuery cubequery,
     		SubTask OriginSbTsk, String measure){
-    	this.addNewSubTask();
-		SqlQuery newSqlQuery = new SqlQuery();
+    	addNewSubTask();
         long time_produce_original = System.nanoTime();
-        newSqlQuery.produceExtractionMethod(this.cubeQuery.get(0));
+        ExtractionMethod method =  cubeQuery.get(0).produceExtractionMethod();
         time_produce_original = System.nanoTime() - time_produce_original;
-        this.getLastSubTask().setTimeProduceOfExtractionMethod (time_produce_original,0);
-        this.getLastSubTask().setExtractionMethod(newSqlQuery);
-        this.getLastSubTask().execute(cubeBase.getDatabase());
-        this.cubeQuery.get(0).setSqlQuery(newSqlQuery);
+        getLastSubTask().addTimeProduceOfExtractionMethod (time_produce_original,0);
+        getLastSubTask().setExtractionMethod(method);
+        getLastSubTask().execute(cubeBase);
+        
 	}
 
 }
