@@ -17,44 +17,42 @@ public class PptxParser {
 	public PptxParser() { }
 	
 	public static void main(final String[] args) {
-		String[] fileName = getFilesName();
-		int count =0;
+		PptxParser parser = new PptxParser();
+		String[] fileName = parser.getFilesName();
 		for (int i = 0; i < fileName.length; i++) {
-			if (fileName[i].isEmpty()) continue;
-			String oldFileName = "TestFiles/" + fileName[i].replace(".pptx",  "A.pptx") ;
-			String newFileName = "OutputFiles/" +fileName[i];
-			FileInputStream oldInputStream;
-			FileInputStream newInputStream;
-
-			try {
-				oldInputStream = new FileInputStream(oldFileName);
-				newInputStream = new FileInputStream(newFileName);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				return;
+			if (fileName[i].isEmpty()) {
+				continue;
 			}
-
+			String oldFileName = "TestFiles/" + fileName[i].
+					replace(".pptx",  "A.pptx");
+			String newFileName = "OutputFiles/" + fileName[i];
 			XMLSlideShow oldPpt;
 			XMLSlideShow newPpt;
-
 			try {
+				FileInputStream oldInputStream = new FileInputStream(
+						oldFileName);
+				FileInputStream newInputStream = new FileInputStream(
+						newFileName);
 				oldPpt = new XMLSlideShow(oldInputStream);
 				newPpt = new XMLSlideShow(newInputStream);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return;	
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
 			}
-			
-			System.out.println( count++ +") Compare " + fileName[i].replace(".pptx",  "A.pptx") + " with " + fileName[i] );
+			System.out.println("Compare " + fileName[i].replace(".pptx",
+					"A.pptx") + " with " + fileName[i]);
 			System.out.println("Slides : ");
-			compareSlidesPPT(oldPpt, newPpt);
+			parser.compareSlidesPPT(oldPpt, newPpt);
 			System.out.println("Notes : ");
-			compareNotesPPT(oldPpt, newPpt);
+			parser.compareNotesPPT(oldPpt, newPpt);
 			System.out.println("End\n ");
 		}
 	}
 
-	public static void compareSlidesPPT(final XMLSlideShow oldPpt,
+	private void compareSlidesPPT(final XMLSlideShow oldPpt,
 			final XMLSlideShow newPpt) {
 		String oldSlides = readPPT(oldPpt);
 		String newSlides = readPPT(newPpt);
@@ -65,7 +63,7 @@ public class PptxParser {
 		}
 	}
 
-	public static String readPPT(final XMLSlideShow ppt) {
+	private String readPPT(final XMLSlideShow ppt) {
 		String slides = "";
 		for (XSLFSlide slide : ppt.getSlides()) {
 			XSLFShape[] shapes = slide.getShapes();
@@ -77,11 +75,10 @@ public class PptxParser {
 				}
 			}
 		}
-		// System.out.println("Text: " + slides);
 		return slides;
 	}
 
-	public static void compareNotesPPT(final XMLSlideShow oldPpt, 
+	private void compareNotesPPT(final XMLSlideShow oldPpt, 
 			final XMLSlideShow newPpt) {
 		String oldSlides = readNotesPPT(oldPpt);
 		String newSlides = readNotesPPT(newPpt);
@@ -92,7 +89,7 @@ public class PptxParser {
 		}
 	}
 
-	public static String readNotesPPT(final XMLSlideShow ppt) {
+	private String readNotesPPT(final XMLSlideShow ppt) {
 		String notes = "";
 		XSLFSlide[] slide = ppt.getSlides();
 		for (int i = 0; i < slide.length; i++) {
@@ -104,7 +101,6 @@ public class PptxParser {
 						for (XSLFTextParagraph xslfParagraph : txtShape
 								.getTextParagraphs()) {
 							notes += xslfParagraph.getText() + "\n";
-							// System.out.println(xslfParagraph.getText());
 						}
 					}
 				}
@@ -115,14 +111,17 @@ public class PptxParser {
 		return notes;
 	}
 
-	 public static String[] getFilesName() {
+	 private String[] getFilesName() {
 	      File dir = new File("OutputFiles/");
 	      String[] files = dir.list();
-	      if (files == null) 
-	          return null;
-	      for (int i = 0; i < files.length; i++)
-	          if (files[i].contains(".docx"))
+	      if (files == null) {
+	    	  return null;
+	      }
+	      for (int i = 0; i < files.length; i++) {
+	          if (files[i].contains(".docx")) {
 	        	  files[i] = "";
+	          }
+	      }
 	      return files;
 	  }
 }

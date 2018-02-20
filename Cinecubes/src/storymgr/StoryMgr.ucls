@@ -2,306 +2,174 @@
 <class-diagram version="1.1.14" icons="true" automaticImage="PNG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="true" nesting-relationships="true" 
   router="FAN">  
-  <class id="1" language="java" name="storymgr.Episode" project="Cinecubes" file="/Cinecubes/src/storymgr/Episode.java" 
+  <class id="1" language="java" name="storymgr.Act" project="Cinecubes" file="/Cinecubes/src/storymgr/Act.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="92" width="289" x="412" y="356"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="true" signature="true" 
+    <position height="-1" width="-1" x="446" y="857"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="storymgr.Act" project="Cinecubes" file="/Cinecubes/src/storymgr/Act.java" 
+  <class id="2" language="java" name="storymgr.Episode" project="Cinecubes" file="/Cinecubes/src/storymgr/Episode.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="143" width="310" x="403" y="166"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="true" signature="true" 
+    <position height="-1" width="-1" x="257" y="1457"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="3" language="java" name="storymgr.FinalResult" project="Cinecubes" 
     file="/Cinecubes/src/storymgr/FinalResult.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="282" y="188"/>    
+    <position height="135" width="147" x="722" y="603"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="4" language="java" name="storymgr.FinResult" project="Cinecubes" 
     file="/Cinecubes/src/storymgr/FinResult.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="268" y="295"/>    
+    <position height="-1" width="-1" x="794" y="928"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="5" language="java" name="storymgr.Slide" project="Cinecubes" file="/Cinecubes/src/storymgr/Slide.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="322" width="290" x="363" y="485"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="true" signature="true" 
+    <position height="-1" width="-1" x="670" y="1758"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="6" language="java" name="storymgr.Story" project="Cinecubes" file="/Cinecubes/src/storymgr/Story.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="100" width="329" x="405" y="18"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="true" signature="true" 
+    <position height="-1" width="-1" x="573" y="385"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="7" language="java" name="storymgr.StoryMgr" project="Cinecubes" 
     file="/Cinecubes/src/storymgr/StoryMgr.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="93" y="66"/>    
+    <position height="-1" width="-1" x="599" y="97"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="8" language="java" name="storymgr.Tabular" project="Cinecubes" file="/Cinecubes/src/storymgr/Tabular.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="257" y="566"/>    
+    <position height="-1" width="-1" x="563" y="2493"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="9" language="java" name="storymgr.Visual" project="Cinecubes" file="/Cinecubes/src/storymgr/Visual.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="238" y="410"/>    
+    <position height="-1" width="-1" x="195" y="2031"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="TaskMgr.Task" project="Cinecubes" file="/Cinecubes/src/TaskMgr/Task.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1041" y="61"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="11" language="java" name="HighlightMgr.Highlight" project="Cinecubes" 
-    file="/Cinecubes/src/HighlightMgr/Highlight.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="264" width="223" x="783" y="526"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="12" language="java" name="TaskMgr.SubTask" project="Cinecubes" file="/Cinecubes/src/TaskMgr/SubTask.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1048" y="254"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="13" language="java" name="TaskMgr.TaskActII" project="Cinecubes" 
-    file="/Cinecubes/src/TaskMgr/TaskActII.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1208" y="459"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="14" language="java" name="TaskMgr.TaskActI" project="Cinecubes" file="/Cinecubes/src/TaskMgr/TaskActI.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1163" y="596"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <dependency id="15">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="13"/>  
+  <dependency id="10">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="9"/>  
   </dependency>  
-  <generalization id="16">    
+  <generalization id="11">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <association id="17">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="18" name="tsk">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="19" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="20">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="21" name="visual">        
-        <position height="0" width="0" x="-291" y="-1685"/>      
-      </attribute>      
-      <multiplicity id="22" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-291" y="-1685"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="23">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="12"/>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="5"/>  
   </dependency>  
-  <generalization id="24">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="25">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="26" name="subTask">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="27" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="28">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
-  <dependency id="29">    
-    <bendpoint x="272" y="793"/>    
-    <bendpoint x="660" y="797"/>    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="11"/>  
-  </dependency>  
-  <generalization id="30">    
+  <dependency id="13">    
     <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <generalization id="14">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
-  <association id="31">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="32" name="Episodes">        
-        <position height="0" width="0" x="274" y="-796"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="274" y="-796"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="34">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="35" name="Acts">        
-        <position height="0" width="0" x="219" y="-303"/>      
-      </attribute>      
-      <multiplicity id="36" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="219" y="-303"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="37">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="14"/>  
+  <dependency id="15">    
+    <bendpoint x="885" y="1083"/>    
+    <bendpoint x="890" y="1458"/>    
+    <bendpoint x="893" y="1975"/>    
+    <bendpoint x="880" y="2293"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="8"/>  
   </dependency>  
-  <association id="38">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="39" name="highlight">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="40" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="41">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="12"/>  
-  </dependency>  
-  <association id="42">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="43" name="subTasks">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="44" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="45">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="46" name="story">        
-        <position height="0" width="0" x="-111" y="-132"/>      
-      </attribute>      
-      <multiplicity id="47" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-111" y="-132"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="48">    
+  <association id="16">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="49" name="FinRes">        
-        <position height="0" width="0" x="-366" y="-402"/>      
-      </attribute>      
-      <multiplicity id="50" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-366" y="-402"/>      
-      </multiplicity>    
+      <attribute id="17" name="FinRes"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="51">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="52" name="highlight">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="53" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+  <association id="19">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="20" name="Acts"/>      
+      <multiplicity id="21" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="54">    
-    <bendpoint x="1211" y="61"/>    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="10"/>  
+  <association id="22">    
+    <bendpoint x="71" y="1655"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="23" name="visual"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="26" name="story"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="28">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
   </generalization>  
-  <dependency id="55">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="12"/>  
+  <dependency id="29">    
+    <bendpoint x="448" y="1850"/>    
+    <bendpoint x="426" y="2220"/>    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
   </dependency>  
-  <dependency id="56">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="12"/>  
+  <dependency id="30">    
+    <bendpoint x="357" y="1897"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="9"/>  
   </dependency>  
+  <association id="31">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="32" name="Episodes"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
-    <attributes public="false" package="false" protected="false" private="false" static="true"/>    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
     <operations public="true" package="true" protected="true" private="true" static="true"/>  
   </classifier-display>  
   <association-display labels="true" multiplicity="true"/>

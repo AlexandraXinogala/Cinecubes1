@@ -1,17 +1,17 @@
 package storymgr;
 
+import highlightmgr.Highlight;
+import highlightmgr.HighlightTable;
+
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import HighlightMgr.Highlight;
-import HighlightMgr.HighlightTable;
-
 public class Tabular extends Visual {
 	
 	
-	public Color[][] colortable;
+	private Color[][] colortable;
 	public int boldColumn;
 	public int boldRow;
 	
@@ -22,6 +22,18 @@ public class Tabular extends Visual {
 		boldRow=-1;
 	}
 
+	public Color[][] getColorTable(){
+		return colortable;
+	}
+	
+	public boolean checkBoldRow(int i){
+		return boldRow == i;
+	}
+	
+	public boolean checkBoldColumn(int j){
+		return boldColumn == j;
+	}
+	
 	 /**
      * This function works fine when we have in the result two columns only.
      * If we have more than two columns, then the bellow function ignore the columns.
@@ -80,7 +92,7 @@ public class Tabular extends Visual {
         
     }
 
-    boolean tryParseFloat(String value){
+   public boolean tryParseFloat(String value){
     	try{
     		Float.parseFloat(value);
     	}

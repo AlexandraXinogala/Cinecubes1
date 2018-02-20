@@ -1,14 +1,15 @@
 package storymgr;
 
+import highlightmgr.Highlight;
+import highlightmgr.HighlightDominationColumn;
+import highlightmgr.HighlightDominationRow;
+import highlightmgr.HighlightMax;
+import highlightmgr.HighlightMin;
+
 import java.util.ArrayList;
 
-import AudioMgr.Audio;
-import HighlightMgr.Highlight;
-import HighlightMgr.HighlightDominationColumn;
-import HighlightMgr.HighlightDominationRow;
-import HighlightMgr.HighlightMax;
-import HighlightMgr.HighlightMin;
-import TaskMgr.SubTask;
+import audiomgr.Audio;
+import taskmgr.SubTask;
 
 public abstract class Episode {
     

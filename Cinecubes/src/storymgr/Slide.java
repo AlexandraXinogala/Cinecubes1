@@ -1,18 +1,19 @@
 package storymgr;
+import highlightmgr.HighlightCompareColumn;
+import highlightmgr.HighlightCompareRow;
+import highlightmgr.HighlightMax;
+import highlightmgr.HighlightMin;
+
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import TaskMgr.SubTask;
-import TextMgr.TextExtraction;
-import TextMgr.TextExtractionPPTX;
-import AudioMgr.AudioEngine;
-import AudioMgr.MaryTTSAudioEngine;
-import CubeMgr.CubeBase.CubeQuery;
-import HelpTask.SqlQuery;
-import HighlightMgr.HighlightCompareColumn;
-import HighlightMgr.HighlightCompareRow;
-import HighlightMgr.HighlightMax;
-import HighlightMgr.HighlightMin;
+import cubemanager.cubebase.CubeQuery;
+import audiomgr.AudioEngine;
+import audiomgr.MaryTTSAudioEngine;
+import taskmgr.SubTask;
+import tetxtmgr.TextExtraction;
+import tetxtmgr.TextExtractionPPTX;
+import exctractionmethod.SqlQuery;
 
 public class Slide extends Episode {
 	
@@ -22,14 +23,13 @@ public class Slide extends Episode {
 	private String SubTitle;
 	private String TitleColumn;
 	private String TitleRow;
-	public ArrayList<CubeQuery> CbQOfSlide;
+	private ArrayList<CubeQuery> CbQOfSlide;
 	private long timeCreationAudio;
 	private long timeCreationText;
 	private long timeCreationTabular;
 	private long timeCreationColorTable;
 	private long timeCreationPutInPPTX;
 	private long timeCombineSlide;
-
 	
 	public Slide() {
 		super();
@@ -40,6 +40,10 @@ public class Slide extends Episode {
 		audioMgr.InitializeVoiceEngine();
 		initializeTime();
 		CbQOfSlide=new ArrayList<CubeQuery>();
+	}
+	
+	public CubeQuery getCubeQuery(int i){
+		return CbQOfSlide.get(i);
 	}
 	
 	
@@ -81,10 +85,6 @@ public class Slide extends Episode {
 		timeCreationPutInPPTX += now;
 	}
 	
-	//public void setTimeCreationTabular(long timeCreationTabular ){
-	//	this.timeCreationTabular = timeCreationTabular;
-	//}
-	
 	public void subTimeCreationTabular(long now ){
 		timeCreationTabular = now  - timeCreationTabular;
 	}
@@ -97,14 +97,6 @@ public class Slide extends Episode {
 		return timeCreationTabular;
 	}
 			
-	public void addTimeCombineSlide(long time ){
-		timeCombineSlide += time;
-	}
-
-	public void setVisual(Visual vis) {
-		this.visual=vis;		
-	}
-	
 	public Visual getVisual(){
 		return visual;
 	}
@@ -151,13 +143,13 @@ public class Slide extends Episode {
    	}
 	public void computePivotTable (TreeSet<String> rowPivot,TreeSet<String> colPivot,String queryResult[][], String[] extraPivot ){
 		Tabular tbl = new Tabular();					//
-		setVisual(tbl);
+		visual = tbl;
 		timeCreationTabular = System.nanoTime();
 		tbl.CreatePivotTable(rowPivot, colPivot, queryResult, extraPivot);
 		subTimeCreationTabular(System.nanoTime());
 	}
 	
-	 public void computePivotTable(SubTask subtsk,
+	 public void addHighLight(SubTask subtsk,
 			   CubeQuery currentCubeQuery, CubeQuery origCubeQuery){
 		    HighlightMin hlmin=new HighlightMin();
 		    HighlightMax hlmax=new HighlightMax();
@@ -194,8 +186,8 @@ public class Slide extends Episode {
 	
 	public Slide copySlide(Slide newSlide,CubeQuery currentCubeQuery, SubTask subtsk){
 		long strTimecombine = System.nanoTime();
-		visual.setPivotTable (customCopyArray(newSlide));
-		addTimeCombineSlide(System.nanoTime()- strTimecombine);
+		visual.setPivotTable(customCopyArray(newSlide));
+		timeCombineSlide = System.nanoTime() - strTimecombine;
 		addTimeCreationTabular(newSlide.timeCreationTabular);
 		addTimeComputeHighlights(newSlide.timeComputeHighlights);
 		addSubTask(subtsk);
@@ -381,7 +373,7 @@ public class Slide extends Episode {
 			.getDifferenceFromOrigin(2)));
 		add_to_notes = ((TextExtractionPPTX) txtMgr)
 				.createTxtForDominatedRowColumns(
-						tbl.getPivotTable(), tbl.colortable,
+						tbl.getPivotTable(), tbl.getColorTable(),
 						getHighlight(), false, true);
 		timeCreationText = System.nanoTime()  - timeCreationText;
 		notes +=  add_to_notes;
@@ -408,7 +400,7 @@ public class Slide extends Episode {
 	}
 	
 
-	public String[][] customCopyArray(Slide newSlide) {
+	private String[][] customCopyArray(Slide newSlide) {
 		String[][] SlideTable = ((Tabular)getVisual()).getPivotTable();
 		String[][] currentTable = ((Tabular)newSlide.getVisual()).getPivotTable();
 		int rows_width = SlideTable.length + currentTable.length;

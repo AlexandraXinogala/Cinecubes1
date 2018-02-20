@@ -2,75 +2,19 @@
 <class-diagram version="1.1.14" icons="true" automaticImage="PNG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="true" nesting-relationships="true" 
   router="FAN">  
-  <class id="1" language="java" name="Client" project="Cinecubes" file="/Cinecubes/src/Client.java" binary="false" 
+  <package id="1" language="java" name="client" project="Cinecubes" file="/Cinecubes/src/client" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="611" y="103"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="2" language="java" name="IMainEngine" project="Cinecubes" file="/Cinecubes/src/IMainEngine.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="437" y="309"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="3" language="java" name="MainEngine" project="Cinecubes" file="/Cinecubes/src/MainEngine.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="321" y="636"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" name="Options" project="Cinecubes" file="/Cinecubes/src/Options.java" binary="false" 
+    <position height="50" width="101" x="99" y="189"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="mainengine" project="Cinecubes" file="/Cinecubes/src/mainengine" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="590" y="717"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="Server" project="Cinecubes" file="/Cinecubes/src/Server.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="196" y="119"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <association id="6">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="7" name="optMgr">        
-        <position height="0" width="0" x="-347" y="-217"/>      
-      </attribute>      
-      <multiplicity id="8" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-347" y="-217"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="9">    
-    <bendpoint x="444" y="120"/>    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="10">    
+    <position height="50" width="101" x="329" y="202"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <dependency id="3">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="11">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="3"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

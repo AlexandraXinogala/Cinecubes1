@@ -2,9 +2,9 @@ package storymgr;
 
 import java.util.ArrayList;
 
-import CubeMgr.CubeManager;
-import TaskMgr.SubTask;
-import CubeMgr.CubeBase.CubeQuery;
+import cubemanager.CubeManager;
+import cubemanager.cubebase.CubeQuery;
+import taskmgr.SubTask;
 
 public class Story {
 
@@ -35,7 +35,6 @@ public class Story {
 
 	public void createActs(CubeQuery cubeQuery, boolean isAudioOn,
 			CubeManager cubeManager, String measure) {
-		
 		this.measure = measure;
 		createIntroAct(cubeQuery, isAudioOn, cubeManager);
 		SubTask originSbTsk = createOriginalAct(cubeQuery, isAudioOn,
@@ -98,6 +97,5 @@ public class Story {
 		}
 		return num_slide_create ;
 	}
-	
-	
+		
 }

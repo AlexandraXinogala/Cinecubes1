@@ -2,18 +2,18 @@ package storymgr;
 
 import java.util.ArrayList;
 
-import CubeMgr.CubeManager;
-import CubeMgr.CubeBase.CubeQuery;
-import HelpTask.SqlQuery;
-import TaskMgr.SubTask;
-import TaskMgr.Task;
-import TaskMgr.TaskActI;
-import TaskMgr.TaskActII;
-import TaskMgr.TaskIntro;
-import TaskMgr.TaskOriginal;
-import TaskMgr.TaskSummary;
-import TextMgr.TextExtraction;
-import TextMgr.TextExtractionPPTX;
+import cubemanager.CubeManager;
+import cubemanager.cubebase.CubeQuery;
+import taskmgr.SubTask;
+import taskmgr.Task;
+import taskmgr.TaskActI;
+import taskmgr.TaskActII;
+import taskmgr.TaskIntro;
+import taskmgr.TaskOriginal;
+import taskmgr.TaskSummary;
+import tetxtmgr.TextExtraction;
+import tetxtmgr.TextExtractionPPTX;
+import exctractionmethod.SqlQuery;
 
 
 public class Act {
@@ -121,11 +121,11 @@ public class Act {
 	    		 			  subtsk.getExtractionMethod().getResultArray(),
 	    		 			  extraPivot);
 	    Episodes.add(newSlide);
-	   /*====== Calculate Highlioghts =======*/
-    	newSlide.calculateHighlights( subtsk);
+	   /*====== Calculate Highlights =======*/
+    	newSlide.calculateHighlights(subtsk);
     	/*====== Compute Color Table =======*/
     	newSlide.computeColorTable(); 
-    	/*====== Calculate domination Highlioghts =======*/
+    	/*====== Calculate domination Highlights =======*/
     	long start_creation_domination = System.nanoTime();
 		newSlide.addTimeComputeHighlights(System.nanoTime() - start_creation_domination);
 	}
@@ -200,9 +200,9 @@ public class Act {
 				currentSlide.createSlideAct2();
 			} else if (currentSlide.checkCountOfSubTask()) {
 				SubTask subtsk = currentSlide.getSubTasks().get(0);
-				CubeQuery currentCubeQuery = currentSlide.CbQOfSlide.get(0);
+				CubeQuery currentCubeQuery = currentSlide. getCubeQuery(0);
 				Tabular tbl = (Tabular) currentSlide.getVisual();
-				subtsk.job(tbl.getPivotTable(), tbl.colortable);
+				subtsk.createHightLightTable(tbl.getPivotTable(), tbl.getColorTable());
 				long start_creation_domination = System.nanoTime();
 				currentSlide.addTimeComputeHighlights(System.nanoTime() - start_creation_domination);
 				String add_to_notes = "";
@@ -282,7 +282,7 @@ public class Act {
 			SubTask subtsk = subTasks.get(j);
 			SqlQuery currentSqlQuery = ((SqlQuery) subtsk.getExtractionMethod());
 			CubeQuery currentCubeQuery =  cubeQueries.get(j);
-			Slide newSlide = new Slide();			//go to eppisode
+			Slide newSlide = new Slide();			//go to episode
 									//
 
 			if ((currentSqlQuery.getResultArray() != null)) {
@@ -301,15 +301,7 @@ public class Act {
 
 					/* ====== Combine Subtask and Pivot Table ======= */
 					Slide tmpSlide = (Slide) getEpisode(getNumEpisodes() - 1);
-					long strTimecombine = System.nanoTime();
-					String[][] newTable = tmpSlide.customCopyArray(newSlide);
-					tmpSlide.getVisual().setPivotTable(newTable);
-					tmpSlide.addTimeCombineSlide(System.nanoTime()- strTimecombine);
-					tmpSlide.addTimeCreationTabular(newSlide.getTimeCreationTabular());
-					tmpSlide.addTimeComputeHighlights(newSlide.getTimeComputeHighlights());
-					tmpSlide.addSubTask(subtsk);
-					tmpSlide.addCubeQuery(currentCubeQuery);
-
+					tmpSlide.copySlide(newSlide,currentCubeQuery,subtsk);
 				} else {
 					newSlide.addSubTask(subtsk);
 					Episodes.add(newSlide);
@@ -364,7 +356,7 @@ public class Act {
 			 	    		 			  subtsk.getExtractionMethod().getResultArray(),
 			 	    		 			  extraPivot);
 			 	  Episodes.add(newSlide);
-			 	 newSlide.computePivotTable(subtsk, currentCubeQuery, tsk.getCubeQuery(1));
+			 	 newSlide.addHighLight(subtsk, currentCubeQuery, tsk.getCubeQuery(1));
 			    } else if (j == 0) {
 			    	newSlide.createNewSlide(currentCubeQuery, subtsk,
 			    			currentSqlQuery.getTitleosColumns());

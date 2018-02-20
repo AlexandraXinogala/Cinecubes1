@@ -5,14 +5,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import CubeMgr.CubeManager;
+import cubemanager.CubeManager;
+import cubemanager.cubebase.CubeQuery;
+import filecreation.FileMgr;
+import filecreation.PptxFile;
+import filecreation.WordFile;
+import parsermgr.ParserManager;
 import storymgr.FinResult;
 import storymgr.StoryMgr;
-import CubeMgr.CubeBase.CubeQuery;
-import ParserMgr.ParserManager;
-import WrapUpMgr.PptxFile;
-import WrapUpMgr.WordFile;
-import WrapUpMgr.FileMgr;
 
 @SuppressWarnings("serial")
 public class MainEngine extends UnicastRemoteObject implements IMainEngine {
@@ -21,10 +21,6 @@ public class MainEngine extends UnicastRemoteObject implements IMainEngine {
 	private StoryMgr storMgr;
 	private ParserManager prsMng;
 	private Options optMgr;
-	private String dbname; // Database Name
-	private String username;// Database username
-	private String password;// Database password
-	private String inputLookup;
 	private String msrname;
 
 	public MainEngine() throws RemoteException {
@@ -35,13 +31,14 @@ public class MainEngine extends UnicastRemoteObject implements IMainEngine {
 	
 	public void answerCubeQueriesFromFile(File file) throws RemoteException {
 		Scanner sc;
-
 		try {
 			sc = (new Scanner(file)).useDelimiter("@");
 			while (sc.hasNext()) {
 				long startTime = System.nanoTime();
-				CubeQuery currentCubQuery = cubeManager.createCubeQueryFromString(sc.next(),msrname);	
-				storMgr.createStory(currentCubQuery, optMgr.getAudio(),startTime, cubeManager,msrname);
+				CubeQuery currentCubQuery = cubeManager.
+						createCubeQueryFromString(sc.next(), msrname);	
+				storMgr.createStory(currentCubQuery, optMgr.getAudio(),
+						startTime, cubeManager, msrname);
 				createDocuments(currentCubQuery, startTime);
 			}
 		} catch (FileNotFoundException e) {
@@ -49,7 +46,7 @@ public class MainEngine extends UnicastRemoteObject implements IMainEngine {
 		}
 	}	
 	
-	   public void createDocuments(CubeQuery cubequery,  long startTime){
+	   public void createDocuments(CubeQuery cubequery,  long startTime) {
 	    	// PPTX Wrap up
 		   	FileMgr wrapUp;
 		   	storMgr.getStory().setFinalResult(new FinResult());
@@ -61,8 +58,7 @@ public class MainEngine extends UnicastRemoteObject implements IMainEngine {
 			wrapUp.createFile(storMgr.getStory());
 			storMgr.setStoryTime(((PptxFile) wrapUp).getunZipZipTime());
 			storMgr.setStoryTime("WrapUp Time\t" + (System.nanoTime()
-					- strWraUpTime) + "\n");
-			
+					- strWraUpTime) + "\n");			
 			// Word Wrap Up
 			if (optMgr.getWord()) {
 				storMgr.getStory().setFinalResult(new FinResult());
@@ -81,13 +77,9 @@ public class MainEngine extends UnicastRemoteObject implements IMainEngine {
 			String passwd, String inputfile, String cubeName)
 			throws RemoteException {
 		createDefaultFolders();
-		dbname = schemaName;
-		username = login;
-		password = passwd;
-		inputLookup = inputfile;
-		initializeCubeMgr(inputLookup);
-		cubeManager.CreateCubeBase(dbname, username, password);
-		constructDimension(inputLookup, cubeName);
+		initializeCubeMgr(inputfile);
+		cubeManager.CreateCubeBase(schemaName, login, passwd);
+		constructDimension(inputfile, cubeName);
 	}
 
 	private void createDefaultFolders() throws RemoteException {
@@ -122,16 +114,13 @@ public class MainEngine extends UnicastRemoteObject implements IMainEngine {
 			@SuppressWarnings("resource")
 			Scanner sc = (new Scanner(file)).useDelimiter(";");
 			while (sc.hasNext()) {
-
 				prsMng.parse(sc.next() + ";");
 				if (prsMng.mode == 2) {
 					this.cubeManager.InsertionDimensionLvl(
 							prsMng.name_creation, prsMng.sqltable,
 							prsMng.originallvllst, prsMng.customlvllst,
 							prsMng.dimensionlst);
-
 				} else if (prsMng.mode == 1) {
-
 					this.cubeManager.InsertionCube(prsMng.name_creation,
 							prsMng.sqltable, prsMng.dimensionlst,
 							prsMng.originallvllst, prsMng.measurelst,
@@ -141,10 +130,10 @@ public class MainEngine extends UnicastRemoteObject implements IMainEngine {
 		}
 	}
 
-	public void optionsChoice(boolean Audio, boolean Word)
+	public void optionsChoice(boolean audio, boolean word)
 			throws RemoteException {
-		optMgr.setAudio(Audio);
-		optMgr.setWord(Word);
+		optMgr.setAudio(audio);
+		optMgr.setWord(word);
 	}
 
 }
