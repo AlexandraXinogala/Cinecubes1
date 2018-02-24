@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import exctractionmethod.ExtractionMethod;
 import exctractionmethod.SqlQuery;
 
 public class CubeQuery extends Cube {
@@ -299,7 +298,7 @@ public class CubeQuery extends Cube {
     	return dimensionText;
 	}
 	
-	 public ExtractionMethod produceExtractionMethod()  {
+	 public SqlQuery produceExtractionMethod()  {
 		 SqlQuery newSqlQuery = new SqlQuery();
 			if(Msr.get(0).getAttribute() !=null ) 
 				newSqlQuery.addReturnedFields(AggregateFunction,Msr.get(0).getAttribute().getName());

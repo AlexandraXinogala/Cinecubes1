@@ -14,11 +14,11 @@ public abstract class ExtractionMethod {
     	Res = new Result();
     }
 
-   public boolean setResult(ResultSet resultSet) {
-	   Res=new Result();
+   public boolean createResultArray(ResultSet resultSet) {
+	   	Res=new Result();
    		return Res.createResultArray(resultSet);
    }
-   
+     
    public Result getResult() {
 	   return Res;
    }
@@ -49,5 +49,7 @@ public abstract class ExtractionMethod {
     abstract public void addGroupers(String[] index);
     abstract public void addSourceCube(String[] index);
     
-  
+  public boolean isEmptyResultArray(){
+	  return  Res.getResultArray() == null;
+  }
 }

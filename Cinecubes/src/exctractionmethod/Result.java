@@ -112,9 +112,7 @@ public class Result {
 			        }
 			        
 			        TitleOfColumns=resultSet.getMetaData().getColumnName(1);
-					//TitleOfRows=resultSet.getMetaData().getColumnName(2);
-					
-					
+							
 			        while(resultSet.next()){
 			           for(int i=0;i<columns;i++){
 			        	   resultArray[resultSet.getRow()+1][i]=resultSet.getString(i+1);

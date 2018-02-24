@@ -30,13 +30,9 @@ public class SubTask {
     	timeExecutionQuery=System.nanoTime();
     	ResultSet rset=cubeBase.getDatabase().executeSql(extractionMethod.toString());
     	timeExecutionQuery=System.nanoTime()-timeExecutionQuery;
-    	return extractionMethod.setResult(rset);
+    	return extractionMethod.createResultArray(rset);
     };
  
-    public void addTimeProduceOfExtractionMethod(long end, long start){
-		timeProduceOfExtractionMethod = end - start;
-	}
-	
 	public void addTimeCreationOfSbTsk(long end, long start){
 		timeCreationOfSbTsk = end - start;
 	}
@@ -48,10 +44,6 @@ public class SubTask {
 	public ExtractionMethod getExtractionMethod() {
 		return extractionMethod;
 	}
-
-	public void setExtractionMethod(ExtractionMethod ExtractionMeth) {
-		extractionMethod = ExtractionMeth;
-	}
 	
 	public ArrayList<Integer> getDifferencesFromOrigin() {
 		return differencesFromOrigin;
@@ -62,7 +54,7 @@ public class SubTask {
 	}
 
 	public boolean checkOriginSubTask(){
-		return extractionMethod.getResult().getResultArray() == null;
+		return extractionMethod.isEmptyResultArray();
 	}
 	
 	public void addDifferenceFromOrigin(int num){
@@ -70,18 +62,25 @@ public class SubTask {
 	}
 	
 	public void createSubTask(CubeQuery cubequery,int difference,int replace, long strTime, CubeBase cubeBase){
-		long endTime=System.nanoTime();
+		timeProduceOfCubeQuery = System.nanoTime();
         long strTimeProduce=System.nanoTime();
         extractionMethod =  cubequery.produceExtractionMethod();
         timeProduceOfExtractionMethod = System.nanoTime() - strTimeProduce;
         if (replace == 1) 
         	 differencesFromOrigin.add(-1);
         differencesFromOrigin.add(difference);
-    	timeProduceOfCubeQuery = endTime - strTime;
+    	timeProduceOfCubeQuery = timeProduceOfCubeQuery - strTime;
 		timeCreationOfSbTsk = System.nanoTime() - strTime;
 		execute(cubeBase);
 	}
-	 	
+	 
+	public void createSubTask(CubeQuery cubequery, CubeBase cubeBase){
+		timeProduceOfExtractionMethod = System.nanoTime();
+        extractionMethod =  cubequery.produceExtractionMethod();
+        timeProduceOfExtractionMethod = System.nanoTime() -  timeProduceOfExtractionMethod;
+		execute(cubeBase);
+	}
+	
 	public CubeQuery createNewExtractionMethod(String num_act, String measure){
 		long strTime = System.nanoTime();
  		CubeQuery cubequery = new CubeQuery("Act " + String.valueOf(num_act));
@@ -98,6 +97,6 @@ public class SubTask {
 	public void createHightLightTable(String[][] pivotTable,Color[][]  colorTable){
 		HighlightTable hltbl = (HighlightTable) getHighlight();
 		hltbl.findDominatedRowsColumns(pivotTable, colorTable);
-		
 	}
+	
 }
